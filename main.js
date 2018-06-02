@@ -1,5 +1,4 @@
 
-
 function Game() {
 
     this.fps = 60;
@@ -7,27 +6,37 @@ function Game() {
     this.time = 0;
     this.dt = 0;
 
-    this.render = function (drawObject) {
+    this.drawingStack = new DrawingStack();
 
-        ctx.drawImage(drawObject.image, drawObject.pos.x, drawObject.pos.y);
-    }
+
+}
+
+function PosFragment(value, min, max) {
+
+    this.value = value;
+    this.min = min;
+    this.max = max;
+
+    return this.value;
 
 }
 
 function Position(x, y) {
-    this.x = x;
-    this.y = y;
+
+    this.xPosFrag = new PosFragment(x);
+    this.yPosFrag = new PosFragment(y);
+
+    Object.defineProperties(this, {
+        "x": {
+            "get": function () { return this.xPosFrag.value; },
+            "set": function (value) { this.xPosFrag.value = value; }
+        }
+    });
 
 }
 
-function DrawObject(sourceFileString) {
 
-    this.image = new Image();
-    this.image.src = sourceFileString;
 
-    this.pos = new Position(0, 0);
-
-}
 
 var game;
 var gameCanvas;
@@ -47,14 +56,18 @@ window.onload = function () {
 
 };
 
+var background1;
+var background2;
 
-var background;
 
 function startGame() {
 
     game = new Game();
 
-    background = new DrawObject("background.png");
+    background1 = game.drawingStack.add("background.png");
+    background2 = game.drawingStack.add("background.png");
+
+    background2.move(-1024, 0);
 
     requestAnimationFrame(updateCanvas);
 
@@ -73,7 +86,10 @@ function updateCanvas() {
 
         game.timeStamp += game.dt;
 
-        game.render(background);
+        background1.move(0.1 * game.dt, 0);
+        background2.move(0.1 * game.dt, 0);
+
+        game.drawingStack.render();
 
 
     }, 1000 / game.fps);
