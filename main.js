@@ -11,13 +11,57 @@ function Game() {
 
 }
 
-function PosFragment(value, min, max) {
+function wrap(value, min, max) {
+
+    if (value > max) { value = min + (value - max); }
+
+    if (value < min) { value = max - (min - value); }
+
+    return value;
+
+}
+
+function PosFragment(value, min, max, limitMode) {
 
     this.value = value;
     this.min = min;
     this.max = max;
 
-    return this.value;
+    //undefined or "lock" or "wrap"
+    this.limitMode = limitMode;
+
+    this.set = function (value) {
+
+
+        switch (this.limitMode) {
+
+            case undefined:
+                this.value = value;
+                break;
+
+            case "lock":
+                this.value = Math.max(value, this.min);
+                this.value = Math.min(value, this.min);
+                break;
+
+            case "wrap":
+                this.value = wrap(value, this.min, this.max);
+
+                break;
+        }
+    }
+
+    this.limit = function (min, max, limitMode) {
+
+
+
+        this.min = min;
+        this.max = max;
+        this.limitMode = limitMode;
+
+
+
+    }
 
 }
 
@@ -29,7 +73,11 @@ function Position(x, y) {
     Object.defineProperties(this, {
         "x": {
             "get": function () { return this.xPosFrag.value; },
-            "set": function (value) { this.xPosFrag.value = value; }
+            "set": function (value) { this.xPosFrag.set(value); },
+        },
+        "y": {
+            "get": function () { return this.yPosFrag.value; },
+            "set": function (value) { this.yPosFrag.set(value); },
         }
     });
 
@@ -66,6 +114,9 @@ function startGame() {
 
     background1 = game.drawingStack.add("background.png");
     background2 = game.drawingStack.add("background.png");
+
+    background1.pos.xPosFrag.limit(0, 1024, "wrap");
+    background2.pos.xPosFrag.limit(-1024, 0, "wrap");
 
     background2.move(-1024, 0);
 
