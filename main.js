@@ -7,6 +7,26 @@ function Game() {
     this.time = 0;
     this.dt = 0;
 
+    this.render = function (drawObject) {
+
+        ctx.drawImage(drawObject.image, drawObject.pos.x, drawObject.pos.y);
+    }
+
+}
+
+function Position(x, y) {
+    this.x = x;
+    this.y = y;
+
+}
+
+function DrawObject(sourceFileString) {
+
+    this.image = new Image();
+    this.image.src = sourceFileString;
+
+    this.pos = new Position(0, 0);
+
 }
 
 var game;
@@ -28,23 +48,16 @@ window.onload = function () {
 };
 
 
+var background;
+
 function startGame() {
 
     game = new Game();
 
+    background = new DrawObject("background.png");
 
     requestAnimationFrame(updateCanvas);
 
-
-}
-
-
-
-function drawBackground() {
-    background = new Image();
-    background.src = "background.png";
-
-    ctx.drawImage(background, 0, 0);
 }
 
 
@@ -60,7 +73,7 @@ function updateCanvas() {
 
         game.timeStamp += game.dt;
 
-        drawBackground();
+        game.render(background);
 
 
     }, 1000 / game.fps);
