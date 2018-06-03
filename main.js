@@ -36,22 +36,30 @@ window.onload = function () {
 var background1;
 var background2;
 
+var backgroundCol;
+
 var card1;
+
+var hand1;
 
 function startGame() {
 
     game = new Game();
 
-    background1 = game.drawingStack.add("background.png");
-    background2 = game.drawingStack.add("background.png");
+    backgroundCol = new DrawCollection();
+
+    background1 = backgroundCol.create("background.png");
+    background2 = backgroundCol.create("background.png");
 
     background1.pos.xPosFrag.limit(0, 1024, "wrap");
     background2.pos.xPosFrag.limit(-1024, 0, "wrap");
 
     background2.move(-1024, 0);
 
-    card1 = game.drawingStack.add("card_background.png");
-    card1.scale = 0.4;
+    hand1 = new Hand();
+
+    card1 = hand1.drawCard();
+    card1.drawObject.scale = 0.4;
 
     requestAnimationFrame(updateCanvas);
 

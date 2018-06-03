@@ -92,26 +92,22 @@ function DrawingStack() {
 
     this.stack = [];
 
-    this.add = function (sourceFileString) {
-
-        var drawObject = new DrawObject(sourceFileString);
-
-        this.stack.push(drawObject);
-
-        return drawObject;
-
-    }
 
     this.remove = function () { }
 
-
     this.render = function () {
 
-        this.stack.forEach(drawObject => {
+        this.stack.forEach(drawCollection => {
 
-            ctx.drawImage(drawObject.image, drawObject.pos.x, drawObject.pos.y, drawObject.scale * drawObject.image.naturalWidth, drawObject.scale * drawObject.image.naturalHeight);
+            drawCollection.collection.forEach(drawObject => {
+
+                ctx.drawImage(drawObject.image, drawObject.pos.x, drawObject.pos.y, drawObject.scale * drawObject.image.naturalWidth, drawObject.scale * drawObject.image.naturalHeight);
+
+            });
 
         });
+
+
 
     }
 }
@@ -138,7 +134,26 @@ function DrawObject(sourceFileString) {
 
 function DrawCollection() {
 
+    this.collection = [];
 
+    game.drawingStack.stack.push(this);
+
+
+    this.create = function (sourceFileString) {
+
+        var drawObject = new DrawObject(sourceFileString);
+
+        this.add(drawObject);
+
+        return drawObject;
+
+    }
+
+    this.add = function (drawObject) {
+
+        this.collection.push(drawObject);
+
+    }
 
 }
 
