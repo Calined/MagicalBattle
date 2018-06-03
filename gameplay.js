@@ -1,29 +1,25 @@
-/*function Card(type) {
+function Card(type, hand) {
+
+    GameObject.call(this, hand);
 
     this.type = type;
 
-    this.backGround = new DrawObject("card_background.png");
+    new DrawObject("card_background.png", this);
 
-    this.foreGround = new DrawObject(type + ".png");
+    new DrawObject(type + ".png", this);
+
 
 }
 
 
 function Hand() {
 
-    this.cards = [];
-
-
+    GameObject.call(this, game.drawingRoot);
 
     this.drawCard = function () {
 
-        var card = new Card("stone");
+        new Card("stone", this);
 
-        this.cards.push(card);
-
-
-        return card;
     }
 
 }
-*/
