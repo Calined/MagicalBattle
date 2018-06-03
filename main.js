@@ -6,8 +6,14 @@ function Game() {
     this.time = 0;
     this.dt = 0;
 
-    this.drawingStack = new DrawingStack();
+    this.drawingRoot = new GameObject(this);
 
+    this.renderThroughStack = function () {
+
+        //if this object is a draw object, render it
+        this.drawingRoot.checkForRender();
+
+    }
 
 }
 
@@ -46,20 +52,19 @@ function startGame() {
 
     game = new Game();
 
-    backgroundCol = new DrawCollection();
+    backgroundCol = new GameObject(game.drawingRoot);
 
-    background1 = backgroundCol.create("background.png");
-    background2 = backgroundCol.create("background.png");
+    background1 = new DrawObject("background.png", backgroundCol);
+    background2 = new DrawObject("background.png", backgroundCol);
 
     background1.pos.xPosFrag.limit(0, 1024, "wrap");
     background2.pos.xPosFrag.limit(-1024, 0, "wrap");
 
-    background2.move(-1024, 0);
+    background2.pos.move(-1024, 0);
 
-    hand1 = new Hand();
+    //hand1 = new Hand();
 
-    card1 = hand1.drawCard();
-    card1.drawObject.scale = 0.4;
+    //card1 = hand1.drawCard();
 
     requestAnimationFrame(updateCanvas);
 

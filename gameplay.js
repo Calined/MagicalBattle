@@ -1,4 +1,4 @@
-function Card(type) {
+/*function Card(type) {
 
     this.type = type;
 
@@ -13,16 +13,17 @@ function Hand() {
 
     this.cards = [];
 
-    this.drawCollection = new DrawCollection();
+
 
     this.drawCard = function () {
 
         var card = new Card("stone");
 
         this.cards.push(card);
-        this.drawCollection.add(card.drawObject);
+
 
         return card;
     }
 
 }
+*/

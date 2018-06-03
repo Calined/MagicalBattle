@@ -32,13 +32,9 @@ function PosFragment(value, min, max, limitMode) {
 
     this.limit = function (min, max, limitMode) {
 
-
-
         this.min = min;
         this.max = max;
         this.limitMode = limitMode;
-
-
 
     }
 
@@ -61,7 +57,17 @@ function Position(x, y) {
         }
     });
 
+
+    this.move = function (xdiff, ydiff) {
+
+        this.x += xdiff;
+        this.y += ydiff;
+
+    }
+
 }
+
+
 
 
 function updateCanvas() {
@@ -75,10 +81,11 @@ function updateCanvas() {
 
         game.timeStamp += game.dt;
 
-        background1.move(0.1 * game.dt, 0);
-        background2.move(0.1 * game.dt, 0);
+        background1.pos.move(0.1 * game.dt, 0);
+        background2.pos.move(0.1 * game.dt, 0);
 
-        game.drawingStack.render();
+        game.renderThroughStack();
+
 
 
     }, 1000 / game.fps);
@@ -87,81 +94,47 @@ function updateCanvas() {
 }
 
 
-
-function DrawingStack() {
-
-    this.stack = [];
-
-
-    this.remove = function () { }
-
-    this.render = function () {
-
-        this.stack.forEach(drawCollection => {
-
-            drawCollection.collection.forEach(drawObject => {
-
-                ctx.drawImage(drawObject.image, drawObject.pos.x, drawObject.pos.y, drawObject.scale * drawObject.image.naturalWidth, drawObject.scale * drawObject.image.naturalHeight);
-
-            });
-
-        });
-
-
-
-    }
-}
-
-
-
-function DrawObject(sourceFileString) {
-
-    this.image = new Image();
-    this.image.src = sourceFileString;
+function GameObject(parent) {
 
     this.pos = new Position(0, 0);
     this.scale = 1;
 
-    this.move = function (xdiff, ydiff) {
+    this.parent = parent;
+    this.children = [];
 
-        this.pos.x += xdiff;
-        this.pos.y += ydiff;
-
+    //add this as a child to the parent
+    if (this.parent instanceof Game == false) {
+        this.parent.children.push(this);
     }
 
+    this.checkForRender = function () {
 
-}
+        if (this instanceof DrawObject) {
+            this.render();
+        }
 
+        this.children.forEach(function (child) {
 
+            child.checkForRender();
 
-function DrawCollection() {
-
-    this.collection = [];
-
-    game.drawingStack.stack.push(this);
-
-
-    this.create = function (sourceFileString) {
-
-        var drawObject = new DrawObject(sourceFileString);
-
-        this.add(drawObject);
-
-        return drawObject;
-
-    }
-
-    this.add = function (drawObject) {
-
-        this.collection.push(drawObject);
+        });
 
     }
 
 }
 
 
-function scroll(xdiff, ydiff) {
+function DrawObject(sourceFileString, parent) {
 
+    GameObject.call(this, parent);
 
+    this.image = new Image();
+    this.image.src = sourceFileString;
+
+    this.render = function () {
+
+        ctx.drawImage(this.image, this.pos.x, this.pos.y, this.scale * this.image.naturalWidth, this.scale * this.image.naturalHeight);
+
+    }
 
 }
