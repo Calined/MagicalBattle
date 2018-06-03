@@ -45,6 +45,7 @@ var background2;
 var backgroundCol;
 
 var hand1;
+var hand2;
 
 function startGame() {
 
@@ -65,6 +66,15 @@ function startGame() {
     hand1.drawCard();
     hand1.drawCard();
     hand1.drawCard();
+
+    hand2 = new Hand();
+
+    hand2.pos.move(470, 0);
+
+    hand2.drawCard();
+    hand2.drawCard();
+    hand2.drawCard();
+
 
     requestAnimationFrame(updateCanvas);
 

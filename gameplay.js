@@ -8,6 +8,8 @@ function Card(type, hand) {
 
     new DrawObject("card_type_" + type + ".png", this);
 
+    new DrawObject("card_lightoverlay.png", this);
+
     this.scale = 0.5;
 
 }
