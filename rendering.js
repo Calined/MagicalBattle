@@ -41,19 +41,28 @@ function PosFragment(value, min, max, limitMode) {
 }
 
 
-function Position(x, y) {
+function Position(x, y, gameObject) {
 
     this.xPosFrag = new PosFragment(x);
     this.yPosFrag = new PosFragment(y);
 
+    //the gameObject this Position belongs to
+    this.gameObject = gameObject;
+
     Object.defineProperties(this, {
         "x": {
             "get": function () { return this.xPosFrag.value; },
-            "set": function (value) { this.xPosFrag.set(value); },
+            "set": function (value) {
+                this.xPosFrag.set(value);
+                this.gameObject.adjustRenderPosition();
+            },
         },
         "y": {
             "get": function () { return this.yPosFrag.value; },
-            "set": function (value) { this.yPosFrag.set(value); },
+            "set": function (value) {
+                this.yPosFrag.set(value);
+                this.gameObject.adjustRenderPosition();
+            },
         }
     });
 
@@ -96,7 +105,12 @@ function updateCanvas() {
 
 function GameObject(parent) {
 
-    this.pos = new Position(0, 0);
+    //relative pos
+    this.pos = new Position(0, 0, this);
+
+    this.currentRenderPosX = 0;
+    this.currentRenderPosY = 0;
+
     this.relativeScale = 1;
     this.currentRenderScale = 1;
 
@@ -112,7 +126,21 @@ function GameObject(parent) {
                 this.adjustRenderScale();
             },
         }
+
     });
+
+    this.adjustRenderPosition = function () {
+
+        this.currentRenderPosX = this.pos.x + this.parent.currentRenderPosX;
+        this.currentRenderPosY = this.pos.y + this.parent.currentRenderPosY;
+
+        this.children.forEach(function (child) {
+
+            child.adjustRenderPosition();
+
+        });
+
+    }
 
     this.adjustRenderScale = function () {
 
@@ -161,7 +189,7 @@ function DrawObject(sourceFileString, parent) {
 
     this.render = function () {
 
-        ctx.drawImage(this.image, this.pos.x, this.pos.y,
+        ctx.drawImage(this.image, this.currentRenderPosX, this.currentRenderPosY,
             this.currentRenderScale * this.image.naturalWidth,
             this.currentRenderScale * this.image.naturalHeight);
 

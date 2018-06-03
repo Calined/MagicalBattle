@@ -21,7 +21,8 @@ function Hand() {
 
         var card = new Card("stone", this);
 
-        card.pos.move(100, 0);
+        //spread cards in hand
+        card.pos.move((this.children.length - 1) * 100, 0);
 
     }
 
