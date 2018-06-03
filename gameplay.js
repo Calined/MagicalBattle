@@ -1,3 +1,18 @@
+function Player() {
+
+    GameObject.call(this, game.drawingRoot);
+
+    this.hand = new Hand(this);
+
+    this.turn = function () {
+
+        new DrawObject("card_selectionoverlay.png", this.hand.children[0]).scale = 1;
+
+    }
+
+}
+
+
 function Card(type, hand) {
 
     GameObject.call(this, hand);
@@ -15,9 +30,9 @@ function Card(type, hand) {
 }
 
 
-function Hand() {
+function Hand(player) {
 
-    GameObject.call(this, game.drawingRoot);
+    GameObject.call(this, player);
 
     this.drawCard = function () {
 

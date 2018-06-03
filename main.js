@@ -44,9 +44,6 @@ var background2;
 
 var backgroundCol;
 
-var hand1;
-var hand2;
-
 function startGame() {
 
     game = new Game();
@@ -61,20 +58,21 @@ function startGame() {
 
     background2.pos.move(-1024, 0);
 
-    hand1 = new Hand();
+    //needs to be extra cause else it goes in circles
+    game.player1 = new Player();
+    game.player2 = new Player();
 
-    hand1.drawCard();
-    hand1.drawCard();
-    hand1.drawCard();
+    game.player1.hand.drawCard();
+    game.player1.hand.drawCard();
+    game.player1.hand.drawCard();
 
-    hand2 = new Hand();
+    game.player2.pos.move(470, 0);
 
-    hand2.pos.move(470, 0);
+    game.player2.hand.drawCard();
+    game.player2.hand.drawCard();
+    game.player2.hand.drawCard();
 
-    hand2.drawCard();
-    hand2.drawCard();
-    hand2.drawCard();
-
+    game.player1.turn();
 
     requestAnimationFrame(updateCanvas);
 
