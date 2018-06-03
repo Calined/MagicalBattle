@@ -11,6 +11,8 @@ function Game() {
 
 }
 
+var Util;
+
 var game;
 var gameCanvas;
 var ctx;
@@ -18,6 +20,8 @@ var ctx;
 var canvasScale = 5;
 
 window.onload = function () {
+
+    Util = new Util();
 
     gameCanvas = document.getElementById("gameCanvas");
     ctx = gameCanvas.getContext("2d");
@@ -32,6 +36,8 @@ window.onload = function () {
 var background1;
 var background2;
 
+var card1;
+
 function startGame() {
 
     game = new Game();
@@ -44,7 +50,8 @@ function startGame() {
 
     background2.move(-1024, 0);
 
-
+    card1 = game.drawingStack.add("card_background.png");
+    card1.scale = 0.4;
 
     requestAnimationFrame(updateCanvas);
 

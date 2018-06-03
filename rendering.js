@@ -109,7 +109,7 @@ function DrawingStack() {
 
         this.stack.forEach(drawObject => {
 
-            ctx.drawImage(drawObject.image, drawObject.pos.x, drawObject.pos.y);
+            ctx.drawImage(drawObject.image, drawObject.pos.x, drawObject.pos.y, drawObject.scale * drawObject.image.naturalWidth, drawObject.scale * drawObject.image.naturalHeight);
 
         });
 
@@ -122,6 +122,7 @@ function DrawObject(sourceFileString) {
     this.image.src = sourceFileString;
 
     this.pos = new Position(0, 0);
+    this.scale = 1;
 
     this.move = function (xdiff, ydiff) {
 
