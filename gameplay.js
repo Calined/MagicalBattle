@@ -8,6 +8,8 @@ function Card(type, hand) {
 
     new DrawObject("card_type_" + type + ".png", this);
 
+    new DrawObject("card_lightoverlay.png", this);
+
     this.scale = 0.5;
 
 }
@@ -21,7 +23,8 @@ function Hand() {
 
         var card = new Card("stone", this);
 
-        card.pos.move(100, 0);
+        //spread cards in hand
+        card.pos.move((this.children.length - 1) * 100, 0);
 
     }
 
