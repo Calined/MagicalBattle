@@ -4,9 +4,27 @@ function Player() {
 
     this.hand = new Hand(this);
 
+    this.selection = undefined;
+
     this.turn = function () {
 
-        new DrawObject("card_selectionoverlay.png", this.hand.children[0]).scale = 1;
+        this.selection = new DrawObject("card_selectionoverlay.png", this.hand.children[0]);
+        this.selection.scale = 1;
+
+    }
+
+    this.moveSelection = function (direction) {
+
+        var currentNum = this.selection.parent.getChildIndex();
+
+        var destinationNum = Util.wrapArray(currentNum + direction, 0, this.hand.children.length - 1);
+
+        this.selection.parent = this.hand.children[destinationNum];
+        this.selection.pos.move(0, 0);
+
+    }
+
+    this.confirmSelection = function () {
 
     }
 

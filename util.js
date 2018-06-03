@@ -1,6 +1,6 @@
 function Util() {
 
-    //wraps a value around min and max
+    //wraps a value around min and max (not for arrays!)
     this.wrap = function (value, min, max) {
 
         if (value > max) { value = min + (value - max); }
@@ -10,5 +10,17 @@ function Util() {
         return value;
 
     }
+
+    //wraps a value around min and max (for arrays!)
+    this.wrapArray = function (value, min, max) {
+
+        if (value > max) { value = min; }
+
+        if (value < min) { value = max; }
+
+        return value;
+
+    }
+
 }
 

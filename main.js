@@ -1,4 +1,5 @@
 
+
 function Game() {
 
     this.fps = 60;
@@ -6,12 +7,41 @@ function Game() {
     this.time = 0;
     this.dt = 0;
 
+    this.input = new Input();
+
     this.drawingRoot = new GameObject(this);
 
     this.renderThroughStack = function () {
 
         //if this object is a draw object, render it
         this.drawingRoot.checkForRender();
+
+    }
+
+}
+
+function Input() {
+
+    document.onkeydown = function (e) {
+
+        switch (e.key) {
+
+            case "a":
+                console.log("left");
+                game.currentPlayer.moveSelection(-1);
+                break;
+
+            case "d":
+                console.log("right");
+                game.currentPlayer.moveSelection(1);
+                break;
+
+            case " ":
+                console.log("confirm");
+                game.currentPlayer.confirmSelection();
+                break;
+        }
+
 
     }
 
@@ -72,7 +102,9 @@ function startGame() {
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
 
-    game.player1.turn();
+    game.currentPlayer = game.player1;
+
+    game.currentPlayer.turn();
 
     requestAnimationFrame(updateCanvas);
 
