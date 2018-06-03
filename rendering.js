@@ -112,6 +112,8 @@ function DrawingStack() {
     }
 }
 
+
+
 function DrawObject(sourceFileString) {
 
     this.image = new Image();
