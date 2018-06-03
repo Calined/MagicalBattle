@@ -177,6 +177,14 @@ function GameObject(parent) {
 
     }
 
+    //returns the Index this child has in it's parent
+    this.getChildIndex = function () {
+
+        for (i = 0; i < this.parent.children.length; i++) {
+            if (this.parent.children[i] === this) { return i; }
+        }
+    }
+
 }
 
 

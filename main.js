@@ -1,4 +1,5 @@
 
+
 function Game() {
 
     this.fps = 60;
@@ -6,12 +7,41 @@ function Game() {
     this.time = 0;
     this.dt = 0;
 
+    this.input = new Input();
+
     this.drawingRoot = new GameObject(this);
 
     this.renderThroughStack = function () {
 
         //if this object is a draw object, render it
         this.drawingRoot.checkForRender();
+
+    }
+
+}
+
+function Input() {
+
+    document.onkeydown = function (e) {
+
+        switch (e.key) {
+
+            case "a":
+                console.log("left");
+                game.currentPlayer.moveSelection(-1);
+                break;
+
+            case "d":
+                console.log("right");
+                game.currentPlayer.moveSelection(1);
+                break;
+
+            case " ":
+                console.log("confirm");
+                game.currentPlayer.confirmSelection();
+                break;
+        }
+
 
     }
 
@@ -44,9 +74,6 @@ var background2;
 
 var backgroundCol;
 
-var hand1;
-var hand2;
-
 function startGame() {
 
     game = new Game();
@@ -61,20 +88,23 @@ function startGame() {
 
     background2.pos.move(-1024, 0);
 
-    hand1 = new Hand();
+    //needs to be extra cause else it goes in circles
+    game.player1 = new Player();
+    game.player2 = new Player();
 
-    hand1.drawCard();
-    hand1.drawCard();
-    hand1.drawCard();
+    game.player1.hand.drawCard();
+    game.player1.hand.drawCard();
+    game.player1.hand.drawCard();
 
-    hand2 = new Hand();
+    game.player2.pos.move(470, 0);
 
-    hand2.pos.move(470, 0);
+    game.player2.hand.drawCard();
+    game.player2.hand.drawCard();
+    game.player2.hand.drawCard();
 
-    hand2.drawCard();
-    hand2.drawCard();
-    hand2.drawCard();
+    game.currentPlayer = game.player1;
 
+    game.currentPlayer.turn();
 
     requestAnimationFrame(updateCanvas);
 
