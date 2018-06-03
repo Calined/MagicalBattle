@@ -97,7 +97,35 @@ function updateCanvas() {
 function GameObject(parent) {
 
     this.pos = new Position(0, 0);
-    this.scale = 1;
+    this.relativeScale = 1;
+    this.currentRenderScale = 1;
+
+    Object.defineProperties(this, {
+        "scale": {
+            "get": function () {
+                return this.relativeScale;
+            },
+            "set": function (value) {
+
+                this.relativeScale = value;
+                //adjust the renderscales of itself and all children
+                this.adjustRenderScale();
+            },
+        }
+    });
+
+    this.adjustRenderScale = function () {
+
+        this.currentRenderScale = this.relativeScale * this.parent.currentRenderScale;
+
+        this.children.forEach(function (child) {
+
+            child.adjustRenderScale();
+
+        });
+
+    }
+
 
     this.parent = parent;
     this.children = [];
@@ -133,7 +161,9 @@ function DrawObject(sourceFileString, parent) {
 
     this.render = function () {
 
-        ctx.drawImage(this.image, this.pos.x, this.pos.y, this.scale * this.image.naturalWidth, this.scale * this.image.naturalHeight);
+        ctx.drawImage(this.image, this.pos.x, this.pos.y,
+            this.currentRenderScale * this.image.naturalWidth,
+            this.currentRenderScale * this.image.naturalHeight);
 
     }
 

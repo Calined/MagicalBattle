@@ -6,8 +6,9 @@ function Card(type, hand) {
 
     new DrawObject("card_background.png", this);
 
-    new DrawObject(type + ".png", this);
+    new DrawObject("card_type_" + type + ".png", this);
 
+    this.scale = 0.5;
 
 }
 
@@ -18,7 +19,9 @@ function Hand() {
 
     this.drawCard = function () {
 
-        new Card("stone", this);
+        var card = new Card("stone", this);
+
+        card.pos.move(100, 0);
 
     }
 

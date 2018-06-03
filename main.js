@@ -63,7 +63,8 @@ function startGame() {
     hand1 = new Hand();
 
     hand1.drawCard();
-
+    hand1.drawCard();
+    hand1.drawCard();
 
     requestAnimationFrame(updateCanvas);
 
