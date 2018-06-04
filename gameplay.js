@@ -36,34 +36,41 @@ class Player {
 }
 
 
-function Card(type, hand) {
+class Card extends GameObject {
 
-    GameObject.call(this, hand);
+    constructor(type, hand) {
 
-    this.type = type;
+        GameObject.call(this, hand);
 
-    new DrawObject("card_background.png", this);
+        this.type = type;
 
-    new DrawObject("card_type_" + type + ".png", this);
+        new DrawObject("card_background.png", this);
 
-    new DrawObject("card_lightoverlay.png", this);
+        new DrawObject("card_type_" + type + ".png", this);
 
-    this.scale = 0.5;
+        new DrawObject("card_lightoverlay.png", this);
+
+        this.scale = 0.5;
+
+    }
 
 }
 
 
-function Hand(player) {
+class Hand extends GameObject {
 
-    GameObject.call(this, player);
+    constructor(player) {
 
-    this.drawCard = function () {
+        GameObject.call(this, player);
 
-        var card = new Card("stone", this);
+        this.drawCard = function () {
 
-        //spread cards in hand
-        card.pos.move((this.children.length - 1) * 100, 0);
+            var card = new Card("stone", this);
 
+            //spread cards in hand
+            card.pos.move((this.children.length - 1) * 100, 0);
+
+        }
     }
 
 }
