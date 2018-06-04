@@ -41,34 +41,37 @@ function PosFragment(value, min, max, limitMode) {
 }
 
 
-function Position(x, y, gameObject) {
+class Position {
 
-    Object.defineProperties(this, {
-        "x": {
-            "get": function () { return this.xPosFrag.value; },
-            "set": function (value) {
-                this.xPosFrag.set(value);
-                this.gameObject.adjustRenderPosition();
-            },
-        },
-        "y": {
-            "get": function () { return this.yPosFrag.value; },
-            "set": function (value) {
-                this.yPosFrag.set(value);
-                this.gameObject.adjustRenderPosition();
-            },
-        }
-    });
+    get x() {
+        return this.xPosFrag.value;
+    }
 
-    this.xPosFrag = new PosFragment(x);
-    this.yPosFrag = new PosFragment(y);
+    set x(value) {
+        this.xPosFrag.set(value);
+        this.gameObject.adjustRenderPosition();
+    }
 
-    //the gameObject this Position belongs to
-    this.gameObject = gameObject;
+    get y() {
+        return this.yPosFrag.value;
+    }
 
+    set y(value) {
+        this.yPosFrag.set(value);
+        this.gameObject.adjustRenderPosition();
+    }
 
+    constructor(x, y, gameObject) {
 
-    this.move = function (xdiff, ydiff) {
+        this.xPosFrag = new PosFragment(x);
+        this.yPosFrag = new PosFragment(y);
+
+        //the gameObject this Position belongs to
+        this.gameObject = gameObject;
+
+    }
+
+    move(xdiff, ydiff) {
 
         this.x += xdiff;
         this.y += ydiff;
@@ -238,8 +241,6 @@ class DrawObject extends GameObject {
     constructor(sourceFileString, parent) {
 
         console.log("DrawObject before call");
-
-        GameObject.call(this, parent);
 
         console.log(this, this.parent, " and this is now ", parent);
 
