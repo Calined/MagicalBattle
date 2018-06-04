@@ -246,6 +246,8 @@ class DrawObject extends GameObject {
 
         console.log("DrawObject before call");
 
+        super(parent);
+
         console.log(this, this.parent, " and this is now ", parent);
 
         this.image = new Image();

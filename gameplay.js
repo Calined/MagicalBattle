@@ -1,8 +1,8 @@
-class Player {
+class Player extends GameObject {
 
     constructor() {
 
-        GameObject.call(this, game.drawingRoot);
+        super(game.drawingRoot);
 
         this.hand = new Hand(this);
 
@@ -40,7 +40,7 @@ class Card extends GameObject {
 
     constructor(type, hand) {
 
-        GameObject.call(this, hand);
+        super(hand);
 
         this.type = type;
 
@@ -61,7 +61,7 @@ class Hand extends GameObject {
 
     constructor(player) {
 
-        GameObject.call(this, player);
+        super(player);
 
         this.drawCard = function () {
 
