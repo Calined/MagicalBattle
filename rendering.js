@@ -108,7 +108,7 @@ function GameObject(parent) {
     console.log("object called before draw object", this, parent);
 
     this.parent = parent;
-    console.log(this.parent, " is now ", parent);
+    console.log(this, this.parent, " is now ", parent);
     this.children = [];
 
     //add this as a child to the parent
@@ -139,7 +139,7 @@ function GameObject(parent) {
                 this.adjustRenderScale();
             },
         },
-        "parent": {
+        /*"parent": {
             "set": function (value) {
                 console.log("parentsetter");
                 //remove from another child somewhere
@@ -152,7 +152,7 @@ function GameObject(parent) {
 
                 this.adjustRenderPosition();
             }
-        }
+        }*/
 
     });
 
@@ -234,9 +234,13 @@ function GameObject(parent) {
 
 function DrawObject(sourceFileString, parent) {
 
+    console.log("DrawObject before call");
+
     GameObject.call(this, parent);
 
-    console.log(this.parent, " and this is now ", parent);
+    console.log(this, this.parent, " and this is now ", parent);
+
+
 
     this.image = new Image();
     this.image.src = sourceFileString;
