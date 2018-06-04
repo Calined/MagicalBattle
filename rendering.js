@@ -43,12 +43,6 @@ function PosFragment(value, min, max, limitMode) {
 
 function Position(x, y, gameObject) {
 
-    this.xPosFrag = new PosFragment(x);
-    this.yPosFrag = new PosFragment(y);
-
-    //the gameObject this Position belongs to
-    this.gameObject = gameObject;
-
     Object.defineProperties(this, {
         "x": {
             "get": function () { return this.xPosFrag.value; },
@@ -65,6 +59,13 @@ function Position(x, y, gameObject) {
             },
         }
     });
+
+    this.xPosFrag = new PosFragment(x);
+    this.yPosFrag = new PosFragment(y);
+
+    //the gameObject this Position belongs to
+    this.gameObject = gameObject;
+
 
 
     this.move = function (xdiff, ydiff) {
@@ -103,60 +104,60 @@ function updateCanvas() {
 }
 
 
-function GameObject(parent) {
+class GameObject {
 
-    console.log("object called before draw object", this, parent);
-
-    this.parent = parent;
-    console.log(this, this.parent, " is now ", parent);
-    this.children = [];
-
-    //add this as a child to the parent
-    if (this.parent instanceof Game == false) {
-        this.parent.children.push(this);
+    get scale() {
+        return this.relativeScale;
     }
 
-    //relative pos 
-    //this is supposed to be the center origin
-    this.pos = new Position(0, 0, this);
+    set scale(value) {
+        this.relativeScale = value;
+        //adjust the renderscales of itself and all children
+        this.adjustRenderScale();
+    }
 
-    //this is the position where the card actually is rendered
-    this.currentRenderPosX = 0;
-    this.currentRenderPosY = 0;
+    set parent(value) {
+        console.log("parentsetter");
+        //remove from another child somewhere
+        this.parent.children.splice(this.getChildIndex(), 1);
 
-    this.relativeScale = 1;
-    this.currentRenderScale = 1;
+        console.log(this.parent);
 
-    Object.defineProperties(this, {
-        "scale": {
-            "get": function () {
-                return this.relativeScale;
-            },
-            "set": function (value) {
+        this.parent = value;
 
-                this.relativeScale = value;
-                //adjust the renderscales of itself and all children
-                this.adjustRenderScale();
-            },
-        },
-        /*"parent": {
-            "set": function (value) {
-                console.log("parentsetter");
-                //remove from another child somewhere
-                this.parent.children.splice(this.getChildIndex(), 1);
+        //add child
+        this.parent.children.push(this);
 
-                this.parent = value;
+        this.adjustRenderPosition();
+    }
 
-                //add child
-                this.parent.children.push(this);
+    constructor(parent) {
 
-                this.adjustRenderPosition();
-            }
-        }*/
+        console.log("object called before draw object", this, parent);
 
-    });
+        this.parent = parent;
+        console.log(this, this.parent, " is now ", parent);
+        this.children = [];
 
-    this.adjustRenderPosition = function () {
+        //add this as a child to the parent
+        if (this.parent instanceof Game == false) {
+            this.parent.children.push(this);
+        }
+
+        //relative pos 
+        //this is supposed to be the center origin
+        this.pos = new Position(0, 0, this);
+
+        //this is the position where the card actually is rendered
+        this.currentRenderPosX = 0;
+        this.currentRenderPosY = 0;
+
+        this.relativeScale = 1;
+        this.currentRenderScale = 1;
+
+    }
+
+    adjustRenderPosition() {
 
         //the cards renderposition in relation to the center and the parent
         //from the center
@@ -190,7 +191,7 @@ function GameObject(parent) {
 
     }
 
-    this.adjustRenderScale = function () {
+    adjustRenderScale() {
 
         this.currentRenderScale = this.relativeScale;
 
@@ -207,7 +208,7 @@ function GameObject(parent) {
 
     }
 
-    this.checkForRender = function () {
+    checkForRender() {
 
         if (this instanceof DrawObject) {
             this.render();
@@ -222,7 +223,7 @@ function GameObject(parent) {
     }
 
     //returns the Index this child has in it's parent
-    this.getChildIndex = function () {
+    getChildIndex() {
 
         for (i = 0; i < this.parent.children.length; i++) {
             if (this.parent.children[i] === this) { return i; }
