@@ -1,16 +1,20 @@
 
 
-function PosFragment(value, min, max, limitMode) {
+class PosFragment {
 
-    this.value = value;
-    this.min = min;
-    this.max = max;
+    constructor(value, min, max, limitMode) {
 
-    //undefined or "lock" or "wrap"
-    this.limitMode = limitMode;
+        this.value = value;
+        this.min = min;
+        this.max = max;
 
-    this.set = function (value) {
+        //undefined or "lock" or "wrap"
+        this.limitMode = limitMode;
 
+    }
+
+
+    set(value) {
 
         switch (this.limitMode) {
 
@@ -30,7 +34,7 @@ function PosFragment(value, min, max, limitMode) {
         }
     }
 
-    this.limit = function (min, max, limitMode) {
+    limit(min, max, limitMode) {
 
         this.min = min;
         this.max = max;
