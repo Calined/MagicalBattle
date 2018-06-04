@@ -105,9 +105,11 @@ function updateCanvas() {
 
 function GameObject(parent) {
 
-    this.parent = parent;
-    this.children = [];
+    console.log("object called before draw object", this, parent);
 
+    this.parent = parent;
+    console.log(this.parent, " is now ", parent);
+    this.children = [];
 
     //add this as a child to the parent
     if (this.parent instanceof Game == false) {
@@ -139,11 +141,14 @@ function GameObject(parent) {
         },
         "parent": {
             "set": function (value) {
+                console.log("parentsetter");
+                //remove from another child somewhere
+                this.parent.children.splice(this.getChildIndex(), 1);
 
                 this.parent = value;
 
-                //remove from another child somewhere
                 //add child
+                this.parent.children.push(this);
 
                 this.adjustRenderPosition();
             }
@@ -167,9 +172,11 @@ function GameObject(parent) {
         }
 
         this.currentRenderPosX = fromCenterToBorderX;
+        this.currentRenderPosY = fromCenterToBorderY;
 
 
         if (this.parent && this.parent.currentRenderPosX) {
+            console.log("jo");
             this.currentRenderPosX += this.parent.currentRenderPosX;
             this.currentRenderPosY += this.parent.currentRenderPosY;
         }
@@ -229,8 +236,12 @@ function DrawObject(sourceFileString, parent) {
 
     GameObject.call(this, parent);
 
+    console.log(this.parent, " and this is now ", parent);
+
     this.image = new Image();
     this.image.src = sourceFileString;
+
+    console.log(this.image, this.parent, parent);
 
     this.render = function () {
 

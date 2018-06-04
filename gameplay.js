@@ -19,6 +19,7 @@ function Player() {
 
         var destinationNum = Util.wrapArray(currentNum + direction, 0, this.hand.children.length - 1);
 
+        //re setting the parent
         this.selection.parent = this.hand.children[destinationNum];
         this.selection.pos.move(0, 0);
 
