@@ -152,11 +152,6 @@ class GameObject {
         this.children = [];
         this.parent = parent;
 
-        //add this as a child to the parent
-        if (this.parent instanceof Game == false) {
-            this.parent.children.push(this);
-        }
-
         //this is the position where the card actually is rendered
         this.currentRenderPosX = 0;
         this.currentRenderPosY = 0;
