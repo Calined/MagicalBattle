@@ -137,6 +137,7 @@ class GameObject {
         else { this.actualHiddenParent.children.push(this); }
 
         this.adjustRenderPosition();
+        this.adjustRenderScale();
     }
 
     get parent() {
@@ -149,15 +150,15 @@ class GameObject {
         //this is supposed to be the center origin
         this.pos = new Position(0, 0, this);
 
-        this.children = [];
-        this.parent = parent;
-
         //this is the position where the card actually is rendered
         this.currentRenderPosX = 0;
         this.currentRenderPosY = 0;
 
         this.relativeScale = 1;
         this.currentRenderScale = 1;
+
+        this.children = [];
+        this.parent = parent;
 
     }
 
@@ -179,8 +180,7 @@ class GameObject {
         this.currentRenderPosX = fromCenterToBorderX;
         this.currentRenderPosY = fromCenterToBorderY;
 
-
-        if (this.parent && this.parent.currentRenderPosX) {
+        if (this.parent && this.parent.currentRenderPosX != undefined) {
 
             this.currentRenderPosX += this.parent.currentRenderPosX;
             this.currentRenderPosY += this.parent.currentRenderPosY;

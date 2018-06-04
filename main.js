@@ -80,7 +80,7 @@ function startGame() {
 
     game = new Game();
 
-    game.drawingRoot.pos.move(0, 1000);
+    game.drawingRoot.pos.move(gameCanvas.width / 2, gameCanvas.height / 2);
 
     backgroundCol = new GameObject(game.drawingRoot);
 
