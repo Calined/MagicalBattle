@@ -78,6 +78,8 @@ function startGame() {
 
     game = new Game();
 
+    //game.drawingRoot.pos.move(0, 1000);
+
     backgroundCol = new GameObject(game.drawingRoot);
 
     background1 = new DrawObject("background.png", backgroundCol);

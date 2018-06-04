@@ -105,9 +105,20 @@ function updateCanvas() {
 
 function GameObject(parent) {
 
-    //relative pos
+    this.parent = parent;
+    this.children = [];
+
+
+    //add this as a child to the parent
+    if (this.parent instanceof Game == false) {
+        this.parent.children.push(this);
+    }
+
+    //relative pos 
+    //this is supposed to be the center origin
     this.pos = new Position(0, 0, this);
 
+    //this is the position where the card actually is rendered
     this.currentRenderPosX = 0;
     this.currentRenderPosY = 0;
 
@@ -125,14 +136,44 @@ function GameObject(parent) {
                 //adjust the renderscales of itself and all children
                 this.adjustRenderScale();
             },
+        },
+        "parent": {
+            "set": function (value) {
+
+                this.parent = value;
+
+                //remove from another child somewhere
+                //add child
+
+                this.adjustRenderPosition();
+            }
         }
 
     });
 
     this.adjustRenderPosition = function () {
 
-        this.currentRenderPosX = this.pos.x + this.parent.currentRenderPosX;
-        this.currentRenderPosY = this.pos.y + this.parent.currentRenderPosY;
+        //the cards renderposition in relation to the center and the parent
+        //from the center
+        //middle minus half the width
+
+        var fromCenterToBorderX = this.pos.x;
+        var fromCenterToBorderY = this.pos.y;
+
+        //if it has something to render/a size
+        if (this.image) {
+            fromCenterToBorderX -= this.image.naturalWidth * this.currentRenderScale / 2;
+            fromCenterToBorderY -= this.image.naturalHeight * this.currentRenderScale / 2;
+        }
+
+        this.currentRenderPosX = fromCenterToBorderX;
+
+
+        if (this.parent && this.parent.currentRenderPosX) {
+            this.currentRenderPosX += this.parent.currentRenderPosX;
+            this.currentRenderPosY += this.parent.currentRenderPosY;
+        }
+
 
         this.children.forEach(function (child) {
 
@@ -144,7 +185,12 @@ function GameObject(parent) {
 
     this.adjustRenderScale = function () {
 
-        this.currentRenderScale = this.relativeScale * this.parent.currentRenderScale;
+        this.currentRenderScale = this.relativeScale;
+
+        if (this.parent && this.parent.currentRenderScale) {
+            this.currentRenderScale *= this.parent.currentRenderScale;
+        }
+
 
         this.children.forEach(function (child) {
 
@@ -152,15 +198,6 @@ function GameObject(parent) {
 
         });
 
-    }
-
-
-    this.parent = parent;
-    this.children = [];
-
-    //add this as a child to the parent
-    if (this.parent instanceof Game == false) {
-        this.parent.children.push(this);
     }
 
     this.checkForRender = function () {
