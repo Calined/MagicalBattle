@@ -53,8 +53,6 @@ class Input {
 
 }
 
-var Util;
-
 var game;
 var gameCanvas;
 var ctx;
@@ -62,8 +60,6 @@ var ctx;
 var canvasScale = 5;
 
 window.onload = function () {
-
-    Util = new Util();
 
     gameCanvas = document.getElementById("gameCanvas");
     ctx = gameCanvas.getContext("2d");
