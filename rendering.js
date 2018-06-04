@@ -124,36 +124,38 @@ class GameObject {
     }
 
     set parent(value) {
-        console.log("parentsetter");
         //remove from another child somewhere
-        this.parent.children.splice(this.getChildIndex(), 1);
+        //if it was assigned beforehand(might be it's own creation!)
+        if (this.actualHiddenParent) {
+            this.actualHiddenParent.children.splice(this.getChildIndex(), 1);
+        }
 
-        console.log(this.parent);
-
-        this.parent = value;
+        this.actualHiddenParent = value;
 
         //add child
-        this.parent.children.push(this);
+        if (value instanceof Game) { }
+        else { this.actualHiddenParent.children.push(this); }
 
         this.adjustRenderPosition();
     }
 
+    get parent() {
+        return this.actualHiddenParent;
+    }
+
     constructor(parent) {
 
-        console.log("object called before draw object", this, parent);
+        //relative pos 
+        //this is supposed to be the center origin
+        this.pos = new Position(0, 0, this);
 
-        this.parent = parent;
-        console.log(this, this.parent, " is now ", parent);
         this.children = [];
+        this.parent = parent;
 
         //add this as a child to the parent
         if (this.parent instanceof Game == false) {
             this.parent.children.push(this);
         }
-
-        //relative pos 
-        //this is supposed to be the center origin
-        this.pos = new Position(0, 0, this);
 
         //this is the position where the card actually is rendered
         this.currentRenderPosX = 0;
@@ -184,11 +186,10 @@ class GameObject {
 
 
         if (this.parent && this.parent.currentRenderPosX) {
-            console.log("jo");
+
             this.currentRenderPosX += this.parent.currentRenderPosX;
             this.currentRenderPosY += this.parent.currentRenderPosY;
         }
-
 
         this.children.forEach(function (child) {
 
@@ -244,16 +245,10 @@ class DrawObject extends GameObject {
 
     constructor(sourceFileString, parent) {
 
-        console.log("DrawObject before call");
-
         super(parent);
-
-        console.log(this, this.parent, " and this is now ", parent);
 
         this.image = new Image();
         this.image.src = sourceFileString;
-
-        console.log(this.image, this.parent, parent);
 
     }
 
