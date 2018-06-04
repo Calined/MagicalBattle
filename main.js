@@ -23,29 +23,32 @@ class Game {
 
 }
 
-function Input() {
+class Input {
 
-    document.onkeydown = function (e) {
+    constructor() {
 
-        switch (e.key) {
+        document.onkeydown = function (e) {
 
-            case "a":
-                console.log("left");
-                game.currentPlayer.moveSelection(-1);
-                break;
+            switch (e.key) {
 
-            case "d":
-                console.log("right");
-                game.currentPlayer.moveSelection(1);
-                break;
+                case "a":
+                    console.log("left");
+                    game.currentPlayer.moveSelection(-1);
+                    break;
 
-            case " ":
-                console.log("confirm");
-                game.currentPlayer.confirmSelection();
-                break;
+                case "d":
+                    console.log("right");
+                    game.currentPlayer.moveSelection(1);
+                    break;
+
+                case " ":
+                    console.log("confirm");
+                    game.currentPlayer.confirmSelection();
+                    break;
+            }
+
+
         }
-
-
     }
 
 }
