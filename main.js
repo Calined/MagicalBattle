@@ -1,17 +1,20 @@
 
 
-function Game() {
+class Game {
 
-    this.fps = 60;
-    this.timeStamp = 0;
-    this.time = 0;
-    this.dt = 0;
+    constructor() {
 
-    this.input = new Input();
+        this.fps = 60;
+        this.timeStamp = 0;
+        this.time = 0;
+        this.dt = 0;
 
-    this.drawingRoot = new GameObject(this);
+        this.input = new Input();
 
-    this.renderThroughStack = function () {
+        this.drawingRoot = new GameObject(this);
+    }
+
+    renderThroughStack() {
 
         //if this object is a draw object, render it
         this.drawingRoot.checkForRender();
