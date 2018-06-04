@@ -1,19 +1,23 @@
-function Player() {
+class Player {
 
-    GameObject.call(this, game.drawingRoot);
+    constructor() {
 
-    this.hand = new Hand(this);
+        GameObject.call(this, game.drawingRoot);
 
-    this.selection = undefined;
+        this.hand = new Hand(this);
 
-    this.turn = function () {
+        this.selection = undefined;
+
+    }
+
+    turn() {
 
         this.selection = new DrawObject("card_selectionoverlay.png", this.hand.children[0]);
         this.selection.scale = 1;
 
     }
 
-    this.moveSelection = function (direction) {
+    moveSelection(direction) {
 
         var currentNum = this.selection.parent.getChildIndex();
 
@@ -25,7 +29,7 @@ function Player() {
 
     }
 
-    this.confirmSelection = function () {
+    confirmSelection() {
 
     }
 
