@@ -1,64 +1,81 @@
-function Player() {
+class Player extends GameObject {
 
-    GameObject.call(this, game.drawingRoot);
+    constructor() {
 
-    this.hand = new Hand(this);
+        super(game.drawingRoot);
 
-    this.selection = undefined;
+        this.hand = new Hand(this);
 
-    this.turn = function () {
+        this.selection = undefined;
+
+    }
+
+    turn() {
 
         this.selection = new DrawObject("card_selectionoverlay.png", this.hand.children[0]);
         this.selection.scale = 1;
 
     }
 
-    this.moveSelection = function (direction) {
+    moveSelection(direction) {
+
+        this.selection.parent.pos.y = 0;
 
         var currentNum = this.selection.parent.getChildIndex();
 
         var destinationNum = Util.wrapArray(currentNum + direction, 0, this.hand.children.length - 1);
 
+        //re setting the parent
         this.selection.parent = this.hand.children[destinationNum];
         this.selection.pos.move(0, 0);
 
+        this.selection.parent.pos.move(0, -20);
     }
 
-    this.confirmSelection = function () {
+    confirmSelection() {
+
+        console.log(this.selection.parent.type);
 
     }
 
 }
 
 
-function Card(type, hand) {
+class Card extends GameObject {
 
-    GameObject.call(this, hand);
+    constructor(type, hand) {
 
-    this.type = type;
+        super(hand);
 
-    new DrawObject("card_background.png", this);
+        this.type = type;
 
-    new DrawObject("card_type_" + type + ".png", this);
+        new DrawObject("card_background.png", this);
 
-    new DrawObject("card_lightoverlay.png", this);
+        new DrawObject("card_type_" + type + ".png", this);
 
-    this.scale = 0.5;
+        new DrawObject("card_lightoverlay.png", this);
+
+        this.scale = 0.5;
+
+    }
 
 }
 
 
-function Hand(player) {
+class Hand extends GameObject {
 
-    GameObject.call(this, player);
+    constructor(player) {
 
-    this.drawCard = function () {
+        super(player);
 
-        var card = new Card("stone", this);
+        this.drawCard = function () {
 
-        //spread cards in hand
-        card.pos.move((this.children.length - 1) * 100, 0);
+            var card = new Card("stone", this);
 
+            //spread cards in hand
+            card.pos.move((this.children.length - 1) * 100 - 100, 0);
+
+        }
     }
 
 }

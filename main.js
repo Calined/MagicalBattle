@@ -1,17 +1,20 @@
+debugRender = false;
 
+class Game {
 
-function Game() {
+    constructor() {
 
-    this.fps = 60;
-    this.timeStamp = 0;
-    this.time = 0;
-    this.dt = 0;
+        this.fps = 60;
+        this.timeStamp = 0;
+        this.time = 0;
+        this.dt = 0;
 
-    this.input = new Input();
+        this.input = new Input();
 
-    this.drawingRoot = new GameObject(this);
+        this.drawingRoot = new GameObject(this);
+    }
 
-    this.renderThroughStack = function () {
+    renderThroughStack() {
 
         //if this object is a draw object, render it
         this.drawingRoot.checkForRender();
@@ -20,34 +23,33 @@ function Game() {
 
 }
 
-function Input() {
+class Input {
 
-    document.onkeydown = function (e) {
+    constructor() {
 
-        switch (e.key) {
+        document.onkeydown = function (e) {
 
-            case "a":
-                console.log("left");
-                game.currentPlayer.moveSelection(-1);
-                break;
+            switch (e.key) {
 
-            case "d":
-                console.log("right");
-                game.currentPlayer.moveSelection(1);
-                break;
+                case "a":
+                    game.currentPlayer.moveSelection(-1);
+                    break;
 
-            case " ":
-                console.log("confirm");
-                game.currentPlayer.confirmSelection();
-                break;
+                case "d":
+                    game.currentPlayer.moveSelection(1);
+                    break;
+
+                case " ":
+                    console.log("confirm");
+                    game.currentPlayer.confirmSelection();
+                    break;
+            }
+
+
         }
-
-
     }
 
 }
-
-var Util;
 
 var game;
 var gameCanvas;
@@ -56,8 +58,6 @@ var ctx;
 var canvasScale = 5;
 
 window.onload = function () {
-
-    Util = new Util();
 
     gameCanvas = document.getElementById("gameCanvas");
     ctx = gameCanvas.getContext("2d");
@@ -78,6 +78,8 @@ function startGame() {
 
     game = new Game();
 
+    game.drawingRoot.pos.move(gameCanvas.width / 2, gameCanvas.height / 2);
+
     backgroundCol = new GameObject(game.drawingRoot);
 
     background1 = new DrawObject("background.png", backgroundCol);
@@ -96,7 +98,8 @@ function startGame() {
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
 
-    game.player2.pos.move(470, 0);
+    game.player1.pos.move(-200, 0);
+    game.player2.pos.move(200, 0);
 
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();

@@ -1,16 +1,20 @@
 
 
-function PosFragment(value, min, max, limitMode) {
+class PosFragment {
 
-    this.value = value;
-    this.min = min;
-    this.max = max;
+    constructor(value, min, max, limitMode) {
 
-    //undefined or "lock" or "wrap"
-    this.limitMode = limitMode;
+        this.value = value;
+        this.min = min;
+        this.max = max;
 
-    this.set = function (value) {
+        //undefined or "lock" or "wrap"
+        this.limitMode = limitMode;
 
+    }
+
+
+    set(value) {
 
         switch (this.limitMode) {
 
@@ -30,7 +34,7 @@ function PosFragment(value, min, max, limitMode) {
         }
     }
 
-    this.limit = function (min, max, limitMode) {
+    limit(min, max, limitMode) {
 
         this.min = min;
         this.max = max;
@@ -41,33 +45,37 @@ function PosFragment(value, min, max, limitMode) {
 }
 
 
-function Position(x, y, gameObject) {
+class Position {
 
-    this.xPosFrag = new PosFragment(x);
-    this.yPosFrag = new PosFragment(y);
+    get x() {
+        return this.xPosFrag.value;
+    }
 
-    //the gameObject this Position belongs to
-    this.gameObject = gameObject;
+    set x(value) {
+        this.xPosFrag.set(value);
+        this.gameObject.adjustRenderPosition();
+    }
 
-    Object.defineProperties(this, {
-        "x": {
-            "get": function () { return this.xPosFrag.value; },
-            "set": function (value) {
-                this.xPosFrag.set(value);
-                this.gameObject.adjustRenderPosition();
-            },
-        },
-        "y": {
-            "get": function () { return this.yPosFrag.value; },
-            "set": function (value) {
-                this.yPosFrag.set(value);
-                this.gameObject.adjustRenderPosition();
-            },
-        }
-    });
+    get y() {
+        return this.yPosFrag.value;
+    }
 
+    set y(value) {
+        this.yPosFrag.set(value);
+        this.gameObject.adjustRenderPosition();
+    }
 
-    this.move = function (xdiff, ydiff) {
+    constructor(x, y, gameObject) {
+
+        this.xPosFrag = new PosFragment(x);
+        this.yPosFrag = new PosFragment(y);
+
+        //the gameObject this Position belongs to
+        this.gameObject = gameObject;
+
+    }
+
+    move(xdiff, ydiff) {
 
         this.x += xdiff;
         this.y += ydiff;
@@ -103,36 +111,80 @@ function updateCanvas() {
 }
 
 
-function GameObject(parent) {
+class GameObject {
 
-    //relative pos
-    this.pos = new Position(0, 0, this);
+    get scale() {
+        return this.relativeScale;
+    }
 
-    this.currentRenderPosX = 0;
-    this.currentRenderPosY = 0;
+    set scale(value) {
+        this.relativeScale = value;
+        //adjust the renderscales of itself and all children
+        this.adjustRenderScale();
+    }
 
-    this.relativeScale = 1;
-    this.currentRenderScale = 1;
-
-    Object.defineProperties(this, {
-        "scale": {
-            "get": function () {
-                return this.relativeScale;
-            },
-            "set": function (value) {
-
-                this.relativeScale = value;
-                //adjust the renderscales of itself and all children
-                this.adjustRenderScale();
-            },
+    set parent(value) {
+        //remove from another child somewhere
+        //if it was assigned beforehand(might be it's own creation!)
+        if (this.actualHiddenParent) {
+            this.actualHiddenParent.children.splice(this.getChildIndex(), 1);
         }
 
-    });
+        this.actualHiddenParent = value;
 
-    this.adjustRenderPosition = function () {
+        //add child
+        if (value instanceof Game) { }
+        else { this.actualHiddenParent.children.push(this); }
 
-        this.currentRenderPosX = this.pos.x + this.parent.currentRenderPosX;
-        this.currentRenderPosY = this.pos.y + this.parent.currentRenderPosY;
+        this.adjustRenderPosition();
+        this.adjustRenderScale();
+    }
+
+    get parent() {
+        return this.actualHiddenParent;
+    }
+
+    constructor(parent) {
+
+        //relative pos 
+        //this is supposed to be the center origin
+        this.pos = new Position(0, 0, this);
+
+        //this is the position where the card actually is rendered
+        this.currentRenderPosX = 0;
+        this.currentRenderPosY = 0;
+
+        this.relativeScale = 1;
+        this.currentRenderScale = 1;
+
+        this.children = [];
+        this.parent = parent;
+
+    }
+
+    adjustRenderPosition() {
+
+        //the cards renderposition in relation to the center and the parent
+        //from the center
+        //middle minus half the width
+
+        var fromCenterToBorderX = this.pos.x;
+        var fromCenterToBorderY = this.pos.y;
+
+        //if it has something to render/a size
+        if (this.image) {
+            fromCenterToBorderX -= this.image.naturalWidth * this.currentRenderScale / 2;
+            fromCenterToBorderY -= this.image.naturalHeight * this.currentRenderScale / 2;
+        }
+
+        this.currentRenderPosX = fromCenterToBorderX;
+        this.currentRenderPosY = fromCenterToBorderY;
+
+        if (this.parent && this.parent.currentRenderPosX != undefined) {
+
+            this.currentRenderPosX += this.parent.currentRenderPosX;
+            this.currentRenderPosY += this.parent.currentRenderPosY;
+        }
 
         this.children.forEach(function (child) {
 
@@ -142,9 +194,14 @@ function GameObject(parent) {
 
     }
 
-    this.adjustRenderScale = function () {
+    adjustRenderScale() {
 
-        this.currentRenderScale = this.relativeScale * this.parent.currentRenderScale;
+        this.currentRenderScale = this.relativeScale;
+
+        if (this.parent && this.parent.currentRenderScale) {
+            this.currentRenderScale *= this.parent.currentRenderScale;
+        }
+
 
         this.children.forEach(function (child) {
 
@@ -154,16 +211,7 @@ function GameObject(parent) {
 
     }
 
-
-    this.parent = parent;
-    this.children = [];
-
-    //add this as a child to the parent
-    if (this.parent instanceof Game == false) {
-        this.parent.children.push(this);
-    }
-
-    this.checkForRender = function () {
+    checkForRender() {
 
         if (this instanceof DrawObject) {
             this.render();
@@ -178,9 +226,9 @@ function GameObject(parent) {
     }
 
     //returns the Index this child has in it's parent
-    this.getChildIndex = function () {
+    getChildIndex() {
 
-        for (i = 0; i < this.parent.children.length; i++) {
+        for (var i = 0; i < this.parent.children.length; i++) {
             if (this.parent.children[i] === this) { return i; }
         }
     }
@@ -188,19 +236,38 @@ function GameObject(parent) {
 }
 
 
-function DrawObject(sourceFileString, parent) {
+class DrawObject extends GameObject {
 
-    GameObject.call(this, parent);
+    constructor(sourceFileString, parent) {
 
-    this.image = new Image();
-    this.image.src = sourceFileString;
+        super(parent);
 
-    this.render = function () {
+        this.image = new Image();
+        this.image.src = sourceFileString;
+
+        this.adjustRenderPosition();
+        this.adjustRenderScale();
+
+    }
+
+    render() {
 
         ctx.drawImage(this.image, this.currentRenderPosX, this.currentRenderPosY,
             this.currentRenderScale * this.image.naturalWidth,
             this.currentRenderScale * this.image.naturalHeight);
 
+
+        if (debugRender) {
+
+            //debug origin
+            ctx.beginPath();
+            ctx.fillStyle = "#FF0000";
+            ctx.arc(this.currentRenderPosX, this.currentRenderPosY, 2, 0, 2 * Math.PI);
+            ctx.fill();
+
+        }
     }
+
+
 
 }
