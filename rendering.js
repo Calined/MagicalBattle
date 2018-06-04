@@ -233,22 +233,24 @@ class GameObject {
 }
 
 
-function DrawObject(sourceFileString, parent) {
+class DrawObject extends GameObject {
 
-    console.log("DrawObject before call");
+    constructor(sourceFileString, parent) {
 
-    GameObject.call(this, parent);
+        console.log("DrawObject before call");
 
-    console.log(this, this.parent, " and this is now ", parent);
+        GameObject.call(this, parent);
 
+        console.log(this, this.parent, " and this is now ", parent);
 
+        this.image = new Image();
+        this.image.src = sourceFileString;
 
-    this.image = new Image();
-    this.image.src = sourceFileString;
+        console.log(this.image, this.parent, parent);
 
-    console.log(this.image, this.parent, parent);
+    }
 
-    this.render = function () {
+    render() {
 
         ctx.drawImage(this.image, this.currentRenderPosX, this.currentRenderPosY,
             this.currentRenderScale * this.image.naturalWidth,
