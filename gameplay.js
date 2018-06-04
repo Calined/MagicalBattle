@@ -19,6 +19,8 @@ class Player extends GameObject {
 
     moveSelection(direction) {
 
+        this.selection.parent.pos.y = 0;
+
         var currentNum = this.selection.parent.getChildIndex();
 
         var destinationNum = Util.wrapArray(currentNum + direction, 0, this.hand.children.length - 1);
@@ -27,11 +29,12 @@ class Player extends GameObject {
         this.selection.parent = this.hand.children[destinationNum];
         this.selection.pos.move(0, 0);
 
+        this.selection.parent.pos.move(0, -20);
     }
 
     confirmSelection() {
 
-        console.log(game.drawingRoot);
+        console.log(this.selection.parent.type);
 
     }
 
@@ -70,7 +73,7 @@ class Hand extends GameObject {
             var card = new Card("stone", this);
 
             //spread cards in hand
-            card.pos.move((this.children.length - 1) * 100, 0);
+            card.pos.move((this.children.length - 1) * 100 - 100, 0);
 
         }
     }

@@ -228,7 +228,7 @@ class GameObject {
     //returns the Index this child has in it's parent
     getChildIndex() {
 
-        for (i = 0; i < this.parent.children.length; i++) {
+        for (var i = 0; i < this.parent.children.length; i++) {
             if (this.parent.children[i] === this) { return i; }
         }
     }
@@ -245,6 +245,9 @@ class DrawObject extends GameObject {
         this.image = new Image();
         this.image.src = sourceFileString;
 
+        this.adjustRenderPosition();
+        this.adjustRenderScale();
+
     }
 
     render() {
@@ -253,6 +256,18 @@ class DrawObject extends GameObject {
             this.currentRenderScale * this.image.naturalWidth,
             this.currentRenderScale * this.image.naturalHeight);
 
+
+        if (debugRender) {
+
+            //debug origin
+            ctx.beginPath();
+            ctx.fillStyle = "#FF0000";
+            ctx.arc(this.currentRenderPosX, this.currentRenderPosY, 2, 0, 2 * Math.PI);
+            ctx.fill();
+
+        }
     }
+
+
 
 }

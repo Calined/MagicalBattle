@@ -1,4 +1,4 @@
-
+debugRender = false;
 
 class Game {
 
@@ -32,12 +32,10 @@ class Input {
             switch (e.key) {
 
                 case "a":
-                    console.log("left");
                     game.currentPlayer.moveSelection(-1);
                     break;
 
                 case "d":
-                    console.log("right");
                     game.currentPlayer.moveSelection(1);
                     break;
 
@@ -100,7 +98,8 @@ function startGame() {
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
 
-    game.player2.pos.move(470, 0);
+    game.player1.pos.move(-200, 0);
+    game.player2.pos.move(200, 0);
 
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
