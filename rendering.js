@@ -233,6 +233,19 @@ class GameObject {
         }
     }
 
+
+    destroy() {
+
+        //call destroy for the children first
+        this.children.forEach(function (child) { child.destroy(); });
+
+        //remove myself from my parents child array
+        this.parent.children.splice(this.getChildIndex(), 1);
+
+        //delete me
+        delete this;
+    }
+
 }
 
 

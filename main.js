@@ -21,6 +21,23 @@ class Game {
 
     }
 
+    evaluateAttack(activeCard, passiveCard) {
+
+        //the other player placed a card
+        if (passiveCard) {
+
+            //try to attack it
+            //if (activeCard.type)
+            console.log(activeCard.type);
+        }
+        //just put down your own card
+        else {
+
+            activeCard.parent.parent.putDownCard(activeCard);
+        }
+
+    }
+
 }
 
 class Input {
@@ -94,20 +111,21 @@ function startGame() {
     game.player1 = new Player();
     game.player2 = new Player();
 
+    game.player1.otherPlayer = game.player2;
+    game.player2.otherPlayer = game.player1;
+
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
 
-    game.player1.pos.move(-200, 0);
-    game.player2.pos.move(200, 0);
+    game.player1.pos.move(-200, 100);
+    game.player2.pos.move(200, 100);
 
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
 
-    game.currentPlayer = game.player1;
-
-    game.currentPlayer.turn();
+    game.player1.turn();
 
     requestAnimationFrame(updateCanvas);
 

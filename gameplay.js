@@ -6,35 +6,55 @@ class Player extends GameObject {
 
         this.hand = new Hand(this);
 
-        this.selection = undefined;
+        //the container for the card the player currently has in play
+        this.activeCardContainer = new GameObject(this);
+        this.activeCardContainer.pos.move(0, -200);
+
+        this.otherPlayer = undefined;
+
+        //the selectionborders
+        this.selectionBorder = undefined;
 
     }
 
     turn() {
 
-        this.selection = new DrawObject("card_selectionoverlay.png", this.hand.children[0]);
-        this.selection.scale = 1;
+        game.currentPlayer = this;
+
+        this.selectionBorder = new DrawObject("card_selectionoverlay.png", this.hand.children[0]);
+        this.selectionBorder.scale = 1;
 
     }
 
     moveSelection(direction) {
 
-        this.selection.parent.pos.y = 0;
+        this.selectionBorder.parent.pos.y = 0;
 
-        var currentNum = this.selection.parent.getChildIndex();
+        var currentNum = this.selectionBorder.parent.getChildIndex();
 
         var destinationNum = Util.wrapArray(currentNum + direction, 0, this.hand.children.length - 1);
 
         //re setting the parent
-        this.selection.parent = this.hand.children[destinationNum];
-        this.selection.pos.move(0, 0);
+        this.selectionBorder.parent = this.hand.children[destinationNum];
+        this.selectionBorder.pos.move(0, 0);
 
-        this.selection.parent.pos.move(0, -20);
+        this.selectionBorder.parent.pos.move(0, -20);
     }
 
     confirmSelection() {
 
-        console.log(this.selection.parent.type);
+        this.selectionBorder.destroy();
+
+        game.evaluateAttack(this.selectionBorder.parent, this.otherPlayer.activeCard);
+
+        this.otherPlayer.turn();
+
+    }
+
+
+    putDownCard(card) {
+
+        card.parent = this.activeCardContainer;
 
     }
 
