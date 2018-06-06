@@ -15,6 +15,10 @@ class Player extends GameObject {
         //the selectionborders
         this.selectionBorder = undefined;
 
+        this.lifebar = new DrawObject("lifebar.png", this);
+        this.lifebar.scale = 0.5;
+        this.lifebar.pos.move(0, -325);
+
     }
 
     turn() {
@@ -45,9 +49,7 @@ class Player extends GameObject {
 
         this.selectionBorder.destroy();
 
-        game.evaluateAttack(this.selectionBorder.parent, this.otherPlayer.activeCard);
-
-        this.otherPlayer.turn();
+        game.evaluateAttack(this.selectionBorder.parent, this.otherPlayer.activeCardContainer.children[0]);
 
     }
 
@@ -56,6 +58,10 @@ class Player extends GameObject {
 
         card.parent = this.activeCardContainer;
 
+    }
+
+    loseHealth() {
+        this.lifebar.scale -= 0.33333333;
     }
 
 }
@@ -71,7 +77,8 @@ class Card extends GameObject {
 
         new DrawObject("card_background.png", this);
 
-        new DrawObject("card_type_" + type + ".png", this);
+        this.typeDrawObject = new DrawObject("card_type_" + type + ".png", this);
+        this.typeDrawObject.scale = 0.2;
 
         new DrawObject("card_lightoverlay.png", this);
 

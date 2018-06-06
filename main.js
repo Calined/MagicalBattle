@@ -28,13 +28,34 @@ class Game {
 
             //try to attack it
             //if (activeCard.type)
-            console.log(activeCard.type);
+            if (
+                activeCard.type === "stone" && passiveCard.type === "scissor" ||
+                activeCard.type === "scissor" && passiveCard.type === "paper" ||
+                activeCard.type === "paper" && passiveCard.type === "stone"
+            ) {
+                passiveCard.parent.parent.loseHealth();
+            }
+
+            if (
+                passiveCard.type === "stone" && activeCard.type === "scissor" ||
+                passiveCard.type === "scissor" && activeCard.type === "paper" ||
+                passiveCard.type === "paper" && activeCard.type === "stone"
+            ) {
+                active.parent.parent.loseHealth();
+            }
+
+
+            activeCard.parent.parent.putDownCard(activeCard);
+            passiveCard.parent.parent.turn();
         }
         //just put down your own card
         else {
 
             activeCard.parent.parent.putDownCard(activeCard);
+            activeCard.parent.parent.otherPlayer.turn();
         }
+
+
 
     }
 
