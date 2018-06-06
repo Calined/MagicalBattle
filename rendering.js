@@ -53,7 +53,7 @@ class Position {
 
     set x(value) {
         this.xPosFrag.set(value);
-        this.gameObject.adjustRenderPosition();
+        this.gameObject.adjustDisplay();
     }
 
     get y() {
@@ -62,7 +62,7 @@ class Position {
 
     set y(value) {
         this.yPosFrag.set(value);
-        this.gameObject.adjustRenderPosition();
+        this.gameObject.adjustDisplay();
     }
 
     constructor(x, y, gameObject) {
@@ -120,8 +120,7 @@ class GameObject {
     set scale(value) {
         this.relativeScale = value;
         //adjust the renderscales of itself and all children
-        this.adjustRenderScale();
-        this.adjustRenderPosition();
+        this.adjustDisplay();
     }
 
     set parent(value) {
@@ -137,8 +136,7 @@ class GameObject {
         if (value instanceof Game) { }
         else { this.actualHiddenParent.children.push(this); }
 
-        this.adjustRenderPosition();
-        this.adjustRenderScale();
+        this.adjustDisplay();
     }
 
     get parent() {
@@ -212,6 +210,13 @@ class GameObject {
 
     }
 
+    adjustDisplay() {
+        this.adjustRenderPosition();
+        this.adjustRenderScale();
+        this.adjustRenderPosition();
+
+    }
+
     checkForRender() {
 
         if (this instanceof DrawObject || this instanceof DrawText) {
@@ -259,8 +264,7 @@ class DrawObject extends GameObject {
         this.image = new Image();
         this.image.src = sourceFileString;
 
-        this.adjustRenderPosition();
-        this.adjustRenderScale();
+        this.adjustDisplay();
 
     }
 

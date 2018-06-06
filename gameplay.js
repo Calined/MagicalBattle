@@ -8,7 +8,7 @@ class Player extends GameObject {
 
         //the container for the card the player currently has in play
         this.activeCardContainer = new GameObject(this);
-        this.activeCardContainer.pos.move(0, -200);
+        this.activeCardContainer.pos.move(game.player1 ? -100 : 100, -210);
 
         this.otherPlayer = undefined;
 
@@ -18,7 +18,7 @@ class Player extends GameObject {
         this.lifebar = new DrawObject("lifebar.png", this);
         this.lifebar.health = 3;
         this.lifebar.scale = 0.5;
-        this.lifebar.pos.move(0, -325);
+        this.lifebar.pos.move(0, -400);
 
     }
 
@@ -61,7 +61,9 @@ class Player extends GameObject {
     putDownCard(card) {
 
         card.parent = this.activeCardContainer;
-
+        card.scale = 0.6;
+        card.pos.x = 0;
+        card.pos.y = 0;
     }
 
     loseHealth() {
@@ -107,7 +109,7 @@ class Card extends GameObject {
 
         new DrawObject("card_lightoverlay.png", this);
 
-        this.scale = 0.5;
+        this.scale = 0.4;
 
     }
 
@@ -144,7 +146,7 @@ class Hand extends GameObject {
             var card = new Card(pickedString, this);
 
             //spread cards in hand
-            card.pos.move((this.children.length - 1) * 100 - 100, 0);
+            card.pos.move((this.children.length - 1) * 75 - 75, 0);
 
         }
     }
