@@ -17,7 +17,7 @@ class Player extends GameObject {
 
         this.lifebar = new DrawObject("lifebar.png", this);
         this.lifebar.scale = 0.5;
-        this.lifebar.pos.move(0, -325);
+        this.lifebar.pos.move(0, -225);
 
     }
 

@@ -121,6 +121,7 @@ class GameObject {
         this.relativeScale = value;
         //adjust the renderscales of itself and all children
         this.adjustRenderScale();
+        this.adjustRenderPosition();
     }
 
     set parent(value) {
