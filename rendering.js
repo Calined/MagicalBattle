@@ -121,6 +121,7 @@ class GameObject {
         this.relativeScale = value;
         //adjust the renderscales of itself and all children
         this.adjustRenderScale();
+        this.adjustRenderPosition();
     }
 
     set parent(value) {
@@ -231,6 +232,19 @@ class GameObject {
         for (var i = 0; i < this.parent.children.length; i++) {
             if (this.parent.children[i] === this) { return i; }
         }
+    }
+
+
+    destroy() {
+
+        //call destroy for the children first
+        this.children.forEach(function (child) { child.destroy(); });
+
+        //remove myself from my parents child array
+        this.parent.children.splice(this.getChildIndex(), 1);
+
+        //delete me
+        delete this;
     }
 
 }

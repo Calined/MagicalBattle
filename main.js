@@ -21,6 +21,44 @@ class Game {
 
     }
 
+    evaluateAttack(activeCard, passiveCard) {
+
+        //the other player placed a card
+        if (passiveCard) {
+
+            //try to attack it
+            //if (activeCard.type)
+            if (
+                activeCard.type === "stone" && passiveCard.type === "scissor" ||
+                activeCard.type === "scissor" && passiveCard.type === "paper" ||
+                activeCard.type === "paper" && passiveCard.type === "stone"
+            ) {
+                passiveCard.parent.parent.loseHealth();
+            }
+
+            if (
+                passiveCard.type === "stone" && activeCard.type === "scissor" ||
+                passiveCard.type === "scissor" && activeCard.type === "paper" ||
+                passiveCard.type === "paper" && activeCard.type === "stone"
+            ) {
+                activeCard.parent.parent.loseHealth();
+            }
+
+
+            activeCard.parent.parent.putDownCard(activeCard);
+            passiveCard.parent.parent.turn();
+        }
+        //just put down your own card
+        else {
+
+            activeCard.parent.parent.putDownCard(activeCard);
+            activeCard.parent.parent.otherPlayer.turn();
+        }
+
+
+
+    }
+
 }
 
 class Input {
@@ -32,14 +70,17 @@ class Input {
             switch (e.key) {
 
                 case "a":
+                case "ArrowLeft":
                     game.currentPlayer.moveSelection(-1);
                     break;
 
                 case "d":
+                case "ArrowRight":
                     game.currentPlayer.moveSelection(1);
                     break;
 
                 case " ":
+                case "Enter":
                     console.log("confirm");
                     game.currentPlayer.confirmSelection();
                     break;
@@ -94,20 +135,21 @@ function startGame() {
     game.player1 = new Player();
     game.player2 = new Player();
 
+    game.player1.otherPlayer = game.player2;
+    game.player2.otherPlayer = game.player1;
+
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
 
-    game.player1.pos.move(-200, 0);
-    game.player2.pos.move(200, 0);
+    game.player1.pos.move(-200, 100);
+    game.player2.pos.move(200, 100);
 
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
 
-    game.currentPlayer = game.player1;
-
-    game.currentPlayer.turn();
+    game.player1.turn();
 
     requestAnimationFrame(updateCanvas);
 
