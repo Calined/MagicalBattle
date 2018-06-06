@@ -49,14 +49,17 @@ class Input {
             switch (e.key) {
 
                 case "a":
+                case "ArrowLeft":
                     game.currentPlayer.moveSelection(-1);
                     break;
 
                 case "d":
+                case "ArrowRight":
                     game.currentPlayer.moveSelection(1);
                     break;
 
                 case " ":
+                case "Enter":
                     console.log("confirm");
                     game.currentPlayer.confirmSelection();
                     break;
