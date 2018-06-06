@@ -15,10 +15,13 @@ class Player extends GameObject {
         //the selectionborders
         this.selectionBorder = undefined;
 
-        this.lifebar = new DrawObject("lifebar.png", this);
+        this.lifebarbg = new DrawObject("lifebarbackground.png", this);
+        this.lifebarbg.scale = 0.5;
+        this.lifebarbg.pos.move(0, -400);
+
+        this.lifebar = new DrawObject("lifebar.png", this.lifebarbg);
+
         this.lifebar.health = 3;
-        this.lifebar.scale = 0.5;
-        this.lifebar.pos.move(0, -400);
 
     }
 

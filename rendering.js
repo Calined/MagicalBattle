@@ -211,10 +211,9 @@ class GameObject {
     }
 
     adjustDisplay() {
-        this.adjustRenderPosition();
+
         this.adjustRenderScale();
         this.adjustRenderPosition();
-
     }
 
     checkForRender() {
