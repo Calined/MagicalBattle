@@ -69,7 +69,7 @@ class Player extends GameObject {
         this.lifebar.scale -= 0.5 / 3;
         this.lifebar.pos.move(-256 / 3, 64 / 3);
 
-        if (this.lifebar.health <= 0) { this.win(); }
+        if (this.lifebar.health <= 0) { this.otherPlayer.win(); }
     }
 
 
