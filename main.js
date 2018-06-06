@@ -41,7 +41,7 @@ class Game {
                 passiveCard.type === "scissor" && activeCard.type === "paper" ||
                 passiveCard.type === "paper" && activeCard.type === "stone"
             ) {
-                active.parent.parent.loseHealth();
+                activeCard.parent.parent.loseHealth();
             }
 
 

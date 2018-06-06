@@ -17,11 +17,14 @@ class Player extends GameObject {
 
         this.lifebar = new DrawObject("lifebar.png", this);
         this.lifebar.scale = 0.5;
-        this.lifebar.pos.move(0, -225);
+        this.lifebar.pos.move(0, -325);
 
     }
 
     turn() {
+
+        //remove old card if there is any
+        if (this.activeCardContainer.children[0]) { this.activeCardContainer.children[0].destroy(); }
 
         game.currentPlayer = this;
 
@@ -61,7 +64,8 @@ class Player extends GameObject {
     }
 
     loseHealth() {
-        this.lifebar.scale -= 0.33333333;
+        this.lifebar.scale -= 0.5 / 3;
+        this.lifebar.pos.move(-256 / 3, 64 / 3);
     }
 
 }
