@@ -214,7 +214,7 @@ class GameObject {
 
     checkForRender() {
 
-        if (this instanceof DrawObject) {
+        if (this instanceof DrawObject || this instanceof DrawText) {
             this.render();
         }
 
@@ -283,5 +283,24 @@ class DrawObject extends GameObject {
     }
 
 
+
+}
+
+class DrawText extends GameObject {
+
+    constructor(textContent, parent) {
+        super(parent);
+
+        this.text = textContent;
+
+    }
+
+    render() {
+
+        ctx.font = "30px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(this.text, this.currentRenderPosX, this.currentRenderPosY);
+
+    }
 
 }

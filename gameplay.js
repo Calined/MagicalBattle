@@ -16,6 +16,7 @@ class Player extends GameObject {
         this.selectionBorder = undefined;
 
         this.lifebar = new DrawObject("lifebar.png", this);
+        this.lifebar.health = 3;
         this.lifebar.scale = 0.5;
         this.lifebar.pos.move(0, -325);
 
@@ -64,8 +65,28 @@ class Player extends GameObject {
     }
 
     loseHealth() {
+        this.lifebar.health -= 1;
         this.lifebar.scale -= 0.5 / 3;
         this.lifebar.pos.move(-256 / 3, 64 / 3);
+
+        if (this.lifebar.health <= 0) { this.win(); }
+    }
+
+
+    win() {
+
+        this.winText = new DrawText("You Win!", this);
+        this.winText.pos.move(0, -300);
+
+        //only one way, win triggers lose!
+        this.otherPlayer.lose();
+    }
+
+    lose() {
+
+        this.loseText = new DrawText("You Lose!", this);
+        this.loseText.pos.move(0, -300);
+
     }
 
 }
