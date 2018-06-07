@@ -86,7 +86,6 @@ class Input {
 
                 case " ":
                 case "Enter":
-                    console.log("confirm");
                     game.currentPlayer.confirmSelection();
                     break;
             }

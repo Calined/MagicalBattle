@@ -11,6 +11,8 @@ class Dimension {
 
     }
 
+    get value() { return this._value; }
+
     set value(value) {
 
         switch (this.limitMode) {
@@ -74,6 +76,7 @@ class GameObject {
 
     constructor(parent) {
 
+
         //relative pos 
         //this is supposed to be the center origin
         this.relativePos = new Vector(0, 0);
@@ -86,8 +89,9 @@ class GameObject {
 
         this.children = [];
 
-
-        this._parent = parent;
+        this._parent = undefined;
+        //calls secure method, so the children get set
+        this.parent = parent;
 
     }
 
@@ -120,7 +124,7 @@ class GameObject {
 
         //remove from another child somewhere
         //if it was assigned beforehand(might be it's own creation!)
-        if (this._parent) {
+        if (this._parent != undefined) {
             this._parent.children.splice(this.getChildIndex(), 1);
         }
 
@@ -129,6 +133,7 @@ class GameObject {
         //add child
         if (value instanceof Game) { }
         else { this._parent.children.push(this); }
+
 
         this.adjustDisplay();
     }
