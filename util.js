@@ -1,3 +1,5 @@
+"use strict";
+
 class Util {
 
     //wraps a value around min and max (not for arrays!)

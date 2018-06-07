@@ -14,7 +14,6 @@ class Dimension {
     get value() { return this._value; }
 
     set value(value) {
-
         switch (this.limitMode) {
 
             case undefined:
@@ -28,7 +27,6 @@ class Dimension {
 
             case "wrap":
                 this._value = Util.wrap(value, this.min, this.max);
-
                 break;
         }
     }
@@ -57,7 +55,6 @@ class Vector {
     }
 
     set x(value) {
-
         this._x.value = value;
 
     }
@@ -143,7 +140,6 @@ class GameObject {
     }
 
     move(xdiff, ydiff) {
-
         this.x += xdiff;
         this.y += ydiff;
 
