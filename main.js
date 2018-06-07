@@ -133,6 +133,14 @@ function startGame() {
 
     background2.pos.move(-1024, 0);
 
+    var pinetreebg = new DrawObject("pinetree.png", background1);
+    pinetreebg.pos.move(200, 250);
+    pinetreebg.scale = 0.1;
+
+    var pinetreefg = new DrawObject("pinetree.png", backgroundCol);
+    pinetreefg.pos.move(50, 0);
+    pinetreefg.scale = 0.25;
+
     //needs to be extra cause else it goes in circles
     game.player1 = new Player();
     game.player2 = new Player();
