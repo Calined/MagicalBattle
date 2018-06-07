@@ -127,7 +127,7 @@ class Hand extends GameObject {
 
         this.drawCard = function () {
 
-            var pickedNum = Math.floor(Math.random() * 3);
+            var pickedNum = Math.floor(Math.random() * 4);
             var pickedString = "";
             switch (pickedNum) {
                 case 0:
@@ -142,7 +142,9 @@ class Hand extends GameObject {
                     pickedString = "paper";
                     break;
 
-
+                case 3:
+                    pickedString = "well";
+                    break;
 
             }
 
