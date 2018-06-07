@@ -259,7 +259,7 @@ class DrawObject extends GameObject {
 
     render() {
 
-        ctx.drawImage(this.image, this.currentRenderPos.x, this.currentRenderPos.x,
+        ctx.drawImage(this.image, this.currentRenderPos.x, this.currentRenderPos.y,
             this.currentRenderScale.x * this.image.naturalWidth,
             this.currentRenderScale.y * this.image.naturalHeight);
 
