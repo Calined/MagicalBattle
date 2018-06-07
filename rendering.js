@@ -1,34 +1,31 @@
 
 
-class PosFragment {
+class Dimension {
 
-    constructor(value, min, max, limitMode) {
+    constructor(value) {
 
-        this.value = value;
-        this.min = min;
-        this.max = max;
+        this._value = value;
 
         //undefined or "lock" or "wrap"
-        this.limitMode = limitMode;
+        this.limitMode = undefined;
 
     }
 
-
-    set(value) {
+    set value(value) {
 
         switch (this.limitMode) {
 
             case undefined:
-                this.value = value;
+                this._value = value;
                 break;
 
             case "lock":
-                this.value = Math.max(value, this.min);
-                this.value = Math.min(value, this.min);
+                this._value = Math.max(value, this.min);
+                this._value = Math.min(value, this.min);
                 break;
 
             case "wrap":
-                this.value = Util.wrap(value, this.min, this.max);
+                this._value = Util.wrap(value, this.min, this.max);
 
                 break;
         }
@@ -44,48 +41,34 @@ class PosFragment {
 
 }
 
+class Vector {
 
-class Position {
+    constructor(xVal, yVal) {
+
+        this._x = new Dimension(xVal);
+        this._y = new Dimension(yVal);
+
+    }
 
     get x() {
-        return this.xPosFrag.value;
+        return this._x.value;
     }
 
     set x(value) {
-        this.xPosFrag.set(value);
-        this.gameObject.adjustDisplay();
+
+        this._x.value = value;
+
     }
 
     get y() {
-        return this.yPosFrag.value;
+        return this._y.value;
     }
 
     set y(value) {
-        this.yPosFrag.set(value);
-        this.gameObject.adjustDisplay();
-    }
-
-    constructor(x, y, gameObject) {
-
-        this.xPosFrag = new PosFragment(x);
-        this.yPosFrag = new PosFragment(y);
-
-        //the gameObject this Position belongs to
-        this.gameObject = gameObject;
-
-    }
-
-    move(xdiff, ydiff) {
-
-        this.x += xdiff;
-        this.y += ydiff;
-
+        this._y.value = value;
     }
 
 }
-
-
-
 
 function updateCanvas() {
     setTimeout(function () {
@@ -98,8 +81,8 @@ function updateCanvas() {
 
         game.timeStamp += game.dt;
 
-        background1.pos.move(0.1 * game.dt, 0);
-        background2.pos.move(0.1 * game.dt, 0);
+        background1.move(0.1 * game.dt, 0);
+        background2.move(0.1 * game.dt, 0);
 
         game.renderThroughStack();
 
@@ -113,17 +96,52 @@ function updateCanvas() {
 
 class GameObject {
 
-    get scale() {
-        return this.relativeScale;
+    constructor(parent) {
+
+        //relative pos 
+        //this is supposed to be the center origin
+        this.relativePos = new Vector(0, 0);
+
+        //this is the position where the card actually is rendered
+        this.currentRenderPos = new Vector(0, 0);
+
+        this.relativeScale = new Vector(1, 1);
+        this.currentRenderScale = new Vector(1, 1);
+
+        this.children = [];
+
+
+        this.parent = parent;
+
+    }
+
+    get x() {
+        return this.relativePos.x;
+    }
+
+    set x(value) {
+        this.relativePos.x = value;
+        this.adjustDisplay();
+    }
+
+    get y() {
+        return this.relativePos.y;
+    }
+
+    set y(value) {
+        this.relativePos.y = value;
+        this.adjustDisplay();
     }
 
     set scale(value) {
-        this.relativeScale = value;
+        this.relativeScale.x = value;
+        this.relativeScale.y = value;
         //adjust the renderscales of itself and all children
         this.adjustDisplay();
     }
 
     set parent(value) {
+
         //remove from another child somewhere
         //if it was assigned beforehand(might be it's own creation!)
         if (this.actualHiddenParent) {
@@ -143,21 +161,10 @@ class GameObject {
         return this.actualHiddenParent;
     }
 
-    constructor(parent) {
+    move(xdiff, ydiff) {
 
-        //relative pos 
-        //this is supposed to be the center origin
-        this.pos = new Position(0, 0, this);
-
-        //this is the position where the card actually is rendered
-        this.currentRenderPosX = 0;
-        this.currentRenderPosY = 0;
-
-        this.relativeScale = 1;
-        this.currentRenderScale = 1;
-
-        this.children = [];
-        this.parent = parent;
+        this.x += xdiff;
+        this.y += ydiff;
 
     }
 
@@ -167,22 +174,23 @@ class GameObject {
         //from the center
         //middle minus half the width
 
-        var fromCenterToBorderX = this.pos.x;
-        var fromCenterToBorderY = this.pos.y;
+        var fromCenterToBorderX = this.x;
+        var fromCenterToBorderY = this.y;
 
         //if it has something to render/a size
         if (this.image) {
-            fromCenterToBorderX -= this.image.naturalWidth * this.currentRenderScale / 2;
-            fromCenterToBorderY -= this.image.naturalHeight * this.currentRenderScale / 2;
+
+            fromCenterToBorderX -= this.image.naturalWidth * this.currentRenderScale.x / 2;
+            fromCenterToBorderY -= this.image.naturalHeight * this.currentRenderScale.y / 2;
         }
 
-        this.currentRenderPosX = fromCenterToBorderX;
-        this.currentRenderPosY = fromCenterToBorderY;
+        this.currentRenderPos.x = fromCenterToBorderX;
+        this.currentRenderPos.y = fromCenterToBorderY;
 
-        if (this.parent && this.parent.currentRenderPosX != undefined) {
+        if (this.parent && this.parent.currentRenderPos != undefined) {
 
-            this.currentRenderPosX += this.parent.currentRenderPosX;
-            this.currentRenderPosY += this.parent.currentRenderPosY;
+            this.currentRenderPos.x += this.parent.currentRenderPos.x;
+            this.currentRenderPos.y += this.parent.currentRenderPos.y;
         }
 
         this.children.forEach(function (child) {
@@ -195,10 +203,12 @@ class GameObject {
 
     adjustRenderScale() {
 
-        this.currentRenderScale = this.relativeScale;
+        this.currentRenderScale.x = this.relativeScale.x;
+        this.currentRenderScale.y = this.relativeScale.y;
 
         if (this.parent && this.parent.currentRenderScale) {
-            this.currentRenderScale *= this.parent.currentRenderScale;
+            this.currentRenderScale.x *= this.parent.currentRenderScale.x;
+            this.currentRenderScale.y *= this.parent.currentRenderScale.y;
         }
 
 
@@ -211,7 +221,6 @@ class GameObject {
     }
 
     adjustDisplay() {
-
         this.adjustRenderScale();
         this.adjustRenderPosition();
     }
@@ -269,9 +278,9 @@ class DrawObject extends GameObject {
 
     render() {
 
-        ctx.drawImage(this.image, this.currentRenderPosX, this.currentRenderPosY,
-            this.currentRenderScale * this.image.naturalWidth,
-            this.currentRenderScale * this.image.naturalHeight);
+        ctx.drawImage(this.image, this.currentRenderPos.x, this.currentRenderPos.x,
+            this.currentRenderScale.x * this.image.naturalWidth,
+            this.currentRenderScale.y * this.image.naturalHeight);
 
 
         if (debugRender) {
@@ -279,7 +288,7 @@ class DrawObject extends GameObject {
             //debug origin
             ctx.beginPath();
             ctx.fillStyle = "#FF0000";
-            ctx.arc(this.currentRenderPosX, this.currentRenderPosY, 2, 0, 2 * Math.PI);
+            ctx.arc(this.currentRenderPos.x, this.currentRenderPos.y, 2, 0, 2 * Math.PI);
             ctx.fill();
 
         }
@@ -302,7 +311,7 @@ class DrawText extends GameObject {
 
         ctx.font = "30px Arial";
         ctx.textAlign = "center";
-        ctx.fillText(this.text, this.currentRenderPosX, this.currentRenderPosY);
+        ctx.fillText(this.text, this.currentRenderPos.x, this.currentRenderPos.y);
 
     }
 

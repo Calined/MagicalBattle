@@ -8,7 +8,7 @@ class Player extends GameObject {
 
         //the container for the card the player currently has in play
         this.activeCardContainer = new GameObject(this);
-        this.activeCardContainer.pos.move(game.player1 ? -100 : 100, -210);
+        this.activeCardContainer.move(game.player1 ? -100 : 100, -210);
 
         this.otherPlayer = undefined;
 
@@ -17,7 +17,7 @@ class Player extends GameObject {
 
         this.lifebarbg = new DrawObject("lifebarbackground.png", this);
         this.lifebarbg.scale = 0.5;
-        this.lifebarbg.pos.move(0, -400);
+        this.lifebarbg.move(0, -400);
 
         this.lifebar = new DrawObject("lifebar.png", this.lifebarbg);
 
@@ -39,7 +39,7 @@ class Player extends GameObject {
 
     moveSelection(direction) {
 
-        this.selectionBorder.parent.pos.y = 0;
+        this.selectionBorder.parent.y = 0;
 
         var currentNum = this.selectionBorder.parent.getChildIndex();
 
@@ -47,9 +47,9 @@ class Player extends GameObject {
 
         //re setting the parent
         this.selectionBorder.parent = this.hand.children[destinationNum];
-        this.selectionBorder.pos.move(0, 0);
+        this.selectionBorder.move(0, 0);
 
-        this.selectionBorder.parent.pos.move(0, -20);
+        this.selectionBorder.parent.move(0, -20);
     }
 
     confirmSelection() {
@@ -65,14 +65,14 @@ class Player extends GameObject {
 
         card.parent = this.activeCardContainer;
         card.scale = 0.6;
-        card.pos.x = 0;
-        card.pos.y = 0;
+        card.x = 0;
+        card.y = 0;
     }
 
     loseHealth() {
         this.lifebar.health -= 1;
         this.lifebar.scale -= 0.5 / 3;
-        this.lifebar.pos.move(-256 / 3, 64 / 3);
+        this.lifebar.move(-256 / 3, 64 / 3);
 
         if (this.lifebar.health <= 0) { this.otherPlayer.win(); }
     }
@@ -81,7 +81,7 @@ class Player extends GameObject {
     win() {
 
         this.winText = new DrawText("You Win!", this);
-        this.winText.pos.move(0, -300);
+        this.winText.move(0, -300);
 
         //only one way, win triggers lose!
         this.otherPlayer.lose();
@@ -90,7 +90,7 @@ class Player extends GameObject {
     lose() {
 
         this.loseText = new DrawText("You Lose!", this);
-        this.loseText.pos.move(0, -300);
+        this.loseText.move(0, -300);
 
     }
 
@@ -151,7 +151,7 @@ class Hand extends GameObject {
             var card = new Card(pickedString, this);
 
             //spread cards in hand
-            card.pos.move((this.children.length - 1) * 75 - 75, 0);
+            card.move((this.children.length - 1) * 75 - 75, 0);
 
         }
     }

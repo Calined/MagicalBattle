@@ -12,6 +12,7 @@ class Game {
         this.input = new Input();
 
         this.drawingRoot = new GameObject(this);
+
     }
 
     renderThroughStack() {
@@ -121,24 +122,24 @@ function startGame() {
 
     game = new Game();
 
-    game.drawingRoot.pos.move(gameCanvas.width / 2, gameCanvas.height / 2);
+    game.drawingRoot.move(gameCanvas.width / 2, gameCanvas.height / 2);
 
     backgroundCol = new GameObject(game.drawingRoot);
 
     background1 = new DrawObject("background.png", backgroundCol);
     background2 = new DrawObject("background.png", backgroundCol);
 
-    background1.pos.xPosFrag.limit(0, 1024, "wrap");
-    background2.pos.xPosFrag.limit(-1024, 0, "wrap");
+    background1.relativePos._x.limit(0, 1024, "wrap");
+    background2.relativePos._y.limit(-1024, 0, "wrap");
 
-    background2.pos.move(-1024, 0);
+    background2.move(-1024, 0);
 
     var pinetreebg = new DrawObject("pinetree.png", background1);
-    pinetreebg.pos.move(200, 250);
+    pinetreebg.move(200, 250);
     pinetreebg.scale = 0.1;
 
     var pinetreefg = new DrawObject("pinetree.png", backgroundCol);
-    pinetreefg.pos.move(50, 0);
+    pinetreefg.move(50, 0);
     pinetreefg.scale = 0.25;
 
     //needs to be extra cause else it goes in circles
@@ -152,8 +153,8 @@ function startGame() {
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
 
-    game.player1.pos.move(-225, 200);
-    game.player2.pos.move(225, 200);
+    game.player1.move(-225, 200);
+    game.player2.move(225, 200);
 
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
