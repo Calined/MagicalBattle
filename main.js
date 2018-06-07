@@ -131,13 +131,9 @@ function startGame() {
     background2 = new DrawObject("background.png", backgroundCol);
 
     background1.relativePos._x.limit(0, 1024, "wrap");
-    background2.relativePos._y.limit(-1024, 0, "wrap");
+    background2.relativePos._x.limit(-1024, 0, "wrap");
 
-    background2.move(-1024, 0);
-
-    var pinetreebg = new DrawObject("pinetree.png", background1);
-    pinetreebg.move(200, 250);
-    pinetreebg.scale = 0.1;
+    background2.move(1024, 0);
 
     var pinetreefg = new DrawObject("pinetree.png", backgroundCol);
     pinetreefg.move(50, 0);
