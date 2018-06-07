@@ -1,12 +1,12 @@
 # MagicalBattle
 
-##current playable version <a href="https://calined.github.io/MagicalBattle/">>HERE<</a> 
+## current playable version <a href="https://calined.github.io/MagicalBattle/">>HERE<</a> 
 
 
-##Technologies used
+## Technologies used
 
-##Approach Taken
+## Approach Taken
 
-##Installation Instructions
+## Installation Instructions
 
-##Unsolved Problems
+## Unsolved Problems
