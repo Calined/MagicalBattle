@@ -8,16 +8,20 @@ class Player extends GameObject {
 
         //the container for the card the player currently has in play
         this.activeCardContainer = new GameObject(this);
-        this.activeCardContainer.pos.move(0, -200);
+        this.activeCardContainer.pos.move(game.player1 ? -100 : 100, -210);
 
         this.otherPlayer = undefined;
 
         //the selectionborders
         this.selectionBorder = undefined;
 
-        this.lifebar = new DrawObject("lifebar.png", this);
-        this.lifebar.scale = 0.5;
-        this.lifebar.pos.move(0, -325);
+        this.lifebarbg = new DrawObject("lifebarbackground.png", this);
+        this.lifebarbg.scale = 0.5;
+        this.lifebarbg.pos.move(0, -400);
+
+        this.lifebar = new DrawObject("lifebar.png", this.lifebarbg);
+
+        this.lifebar.health = 3;
 
     }
 
@@ -60,12 +64,34 @@ class Player extends GameObject {
     putDownCard(card) {
 
         card.parent = this.activeCardContainer;
-
+        card.scale = 0.6;
+        card.pos.x = 0;
+        card.pos.y = 0;
     }
 
     loseHealth() {
+        this.lifebar.health -= 1;
         this.lifebar.scale -= 0.5 / 3;
         this.lifebar.pos.move(-256 / 3, 64 / 3);
+
+        if (this.lifebar.health <= 0) { this.otherPlayer.win(); }
+    }
+
+
+    win() {
+
+        this.winText = new DrawText("You Win!", this);
+        this.winText.pos.move(0, -300);
+
+        //only one way, win triggers lose!
+        this.otherPlayer.lose();
+    }
+
+    lose() {
+
+        this.loseText = new DrawText("You Lose!", this);
+        this.loseText.pos.move(0, -300);
+
     }
 
 }
@@ -86,7 +112,7 @@ class Card extends GameObject {
 
         new DrawObject("card_lightoverlay.png", this);
 
-        this.scale = 0.5;
+        this.scale = 0.4;
 
     }
 
@@ -123,7 +149,7 @@ class Hand extends GameObject {
             var card = new Card(pickedString, this);
 
             //spread cards in hand
-            card.pos.move((this.children.length - 1) * 100 - 100, 0);
+            card.pos.move((this.children.length - 1) * 75 - 75, 0);
 
         }
     }

@@ -142,12 +142,14 @@ function startGame() {
     game.player1.hand.drawCard();
     game.player1.hand.drawCard();
 
-    game.player1.pos.move(-200, 100);
-    game.player2.pos.move(200, 100);
+    game.player1.pos.move(-225, 200);
+    game.player2.pos.move(225, 200);
 
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
     game.player2.hand.drawCard();
+
+    game.drawingRoot.adjustDisplay();
 
     game.player1.turn();
 
