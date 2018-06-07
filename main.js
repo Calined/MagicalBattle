@@ -1,4 +1,6 @@
-debugRender = false;
+"use strict";
+
+var debugRender = false;
 
 class Game {
 
