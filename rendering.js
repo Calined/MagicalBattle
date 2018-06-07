@@ -70,30 +70,6 @@ class Vector {
 
 }
 
-function updateCanvas() {
-    setTimeout(function () {
-        requestAnimationFrame(updateCanvas);
-        var now = new Date().getTime(),
-            dt = now - (game.time || now);
-        game.dt = dt;
-
-        game.time = now;
-
-        game.timeStamp += game.dt;
-
-        background1.move(0.1 * game.dt, 0);
-        background2.move(0.1 * game.dt, 0);
-
-        game.renderThroughStack();
-
-
-
-    }, 1000 / game.fps);
-
-
-}
-
-
 class GameObject {
 
     constructor(parent) {
@@ -111,7 +87,7 @@ class GameObject {
         this.children = [];
 
 
-        this.parent = parent;
+        this._parent = parent;
 
     }
 
@@ -144,21 +120,21 @@ class GameObject {
 
         //remove from another child somewhere
         //if it was assigned beforehand(might be it's own creation!)
-        if (this.actualHiddenParent) {
-            this.actualHiddenParent.children.splice(this.getChildIndex(), 1);
+        if (this._parent) {
+            this._parent.children.splice(this.getChildIndex(), 1);
         }
 
-        this.actualHiddenParent = value;
+        this._parent = value;
 
         //add child
         if (value instanceof Game) { }
-        else { this.actualHiddenParent.children.push(this); }
+        else { this._parent.children.push(this); }
 
         this.adjustDisplay();
     }
 
     get parent() {
-        return this.actualHiddenParent;
+        return this._parent;
     }
 
     move(xdiff, ydiff) {
@@ -206,7 +182,7 @@ class GameObject {
         this.currentRenderScale.x = this.relativeScale.x;
         this.currentRenderScale.y = this.relativeScale.y;
 
-        if (this.parent && this.parent.currentRenderScale) {
+        if (this.parent && this.parent.currentRenderScale != undefined) {
             this.currentRenderScale.x *= this.parent.currentRenderScale.x;
             this.currentRenderScale.y *= this.parent.currentRenderScale.y;
         }
@@ -314,5 +290,28 @@ class DrawText extends GameObject {
         ctx.fillText(this.text, this.currentRenderPos.x, this.currentRenderPos.y);
 
     }
+
+}
+
+function updateCanvas() {
+    setTimeout(function () {
+        requestAnimationFrame(updateCanvas);
+        var now = new Date().getTime(),
+            dt = now - (game.time || now);
+        game.dt = dt;
+
+        game.time = now;
+
+        game.timeStamp += game.dt;
+
+        background1.move(0.1 * game.dt, 0);
+        background2.move(0.1 * game.dt, 0);
+
+        game.renderThroughStack();
+
+
+
+    }, 1000 / game.fps);
+
 
 }
