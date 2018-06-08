@@ -6,7 +6,7 @@ class Game {
 
     constructor() {
 
-        this.fps = 60;
+        this.fps = 30;
         this.timeStamp = 0;
         this.time = 0;
         this.dt = 0;
@@ -124,8 +124,6 @@ function startGame() {
 
     game = new Game();
 
-    game.drawingRoot.move(gameCanvas.width / 2, gameCanvas.height / 2);
-
     backgroundCol = new GameObject(game.drawingRoot);
 
     background1 = new DrawObject("background.png", backgroundCol);
@@ -161,6 +159,12 @@ function startGame() {
     game.drawingRoot.adjustDisplay();
 
     game.player1.turn();
+
+    console.log(gameCanvas.width, gameCanvas.height);
+    //current drawing root hat schon die current render pos vom ganzen canvas statt halben
+    console.log(background1.parent.parent.currentRenderPos, background1.parent.parent.x);
+    console.log(background1.parent.currentRenderPos);
+    console.log(background1.currentRenderPos);
 
     requestAnimationFrame(updateCanvas);
 

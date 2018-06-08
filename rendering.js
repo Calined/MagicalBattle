@@ -77,7 +77,6 @@ class GameObject {
         //relative pos 
         //this is supposed to be the center origin
         this.relativePos = new Vector(0, 0);
-
         //this is the position where the card actually is rendered
         this.currentRenderPos = new Vector(0, 0);
 
@@ -157,23 +156,37 @@ class GameObject {
         //from the center
         //middle minus half the width
 
-        var fromCenterToBorderX = this.x;
-        var fromCenterToBorderY = this.y;
+        if (this.parent.currentRenderPos) {
+            var newX = this.parent.currentRenderPos.x;
+            var newY = this.parent.currentRenderPos.y;
+        }
+        else {
+            var newX = 0;
+            var newY = 0;
+        }
 
-        //if it has something to render/a size
+        if (this.parent.image) {
+            newX += this.parent.image.naturalWidth * this.parent.currentRenderScale.x / 2;
+            newY += this.parent.image.naturalHeight * this.parent.currentRenderScale.y / 2;
+        }
+        else {
+            //checking if this parent is window
+            if (this.parent.currentRenderPos === undefined) {
+                newX += gameCanvas.width / 2;
+                newY += gameCanvas.height / 2;
+            }
+        }
+
+        newX += this.x;
+        newY += this.y;
+
         if (this.image) {
-
-            fromCenterToBorderX -= this.image.naturalWidth * this.currentRenderScale.x / 2;
-            fromCenterToBorderY -= this.image.naturalHeight * this.currentRenderScale.y / 2;
+            newX -= this.image.naturalWidth * this.currentRenderScale.x / 2;
+            newY -= this.image.naturalHeight * this.currentRenderScale.y / 2;
         }
 
-        this.currentRenderPos.x = fromCenterToBorderX;
-        this.currentRenderPos.y = fromCenterToBorderY;
-
-        if (this.parent && this.parent.currentRenderPos != undefined) {
-            this.currentRenderPos.x += this.parent.currentRenderPos.x;
-            this.currentRenderPos.y += this.parent.currentRenderPos.y;
-        }
+        this.currentRenderPos.x = newX;
+        this.currentRenderPos.y = newY;
 
         this.children.forEach(function (child) {
 
@@ -185,8 +198,8 @@ class GameObject {
 
     adjustRenderScale() {
 
-        this.currentRenderScale.x = this.relativeScale.x;
-        this.currentRenderScale.y = this.relativeScale.y;
+        this.currentRenderScale.x = this.scale.x;
+        this.currentRenderScale.y = this.scale.y;
 
         if (this.parent && this.parent.currentRenderScale != undefined) {
             this.currentRenderScale.x *= this.parent.currentRenderScale.x;
@@ -260,7 +273,6 @@ class DrawObject extends GameObject {
 
     render() {
 
-        if (this.image.src.search("lifebar.png") != -1) { console.log(this.x, this.scale.x, this.currentRenderPos.x); }
         ctx.drawImage(this.image, this.currentRenderPos.x, this.currentRenderPos.y,
             this.currentRenderScale.x * this.image.naturalWidth,
             this.currentRenderScale.y * this.image.naturalHeight);
