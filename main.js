@@ -19,6 +19,7 @@ class Game {
 
     renderThroughStack() {
 
+        ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
         //if this object is a draw object, render it
         this.drawingRoot.checkForRender();
 

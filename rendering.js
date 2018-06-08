@@ -117,6 +117,12 @@ class GameObject {
         this.adjustDisplay();
     }
 
+    get scale() {
+
+        return this.relativeScale;
+
+    }
+
     set parent(value) {
 
         //remove from another child somewhere
@@ -165,7 +171,6 @@ class GameObject {
         this.currentRenderPos.y = fromCenterToBorderY;
 
         if (this.parent && this.parent.currentRenderPos != undefined) {
-
             this.currentRenderPos.x += this.parent.currentRenderPos.x;
             this.currentRenderPos.y += this.parent.currentRenderPos.y;
         }
@@ -255,6 +260,7 @@ class DrawObject extends GameObject {
 
     render() {
 
+        if (this.image.src.search("lifebar.png") != -1) { console.log(this.x, this.scale.x, this.currentRenderPos.x); }
         ctx.drawImage(this.image, this.currentRenderPos.x, this.currentRenderPos.y,
             this.currentRenderScale.x * this.image.naturalWidth,
             this.currentRenderScale.y * this.image.naturalHeight);
