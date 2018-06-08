@@ -103,16 +103,20 @@ var ctx;
 
 var canvasScale = 5;
 
-window.onload = function () {
+document.onload = function () {
+
+    console.log("doc loaded");
 
     gameCanvas = document.getElementById("gameCanvas");
     ctx = gameCanvas.getContext("2d");
 
-    gameCanvas.width = 160 * canvasScale;
-    gameCanvas.height = 90 * canvasScale;
+    if (typeof testing === undefined) {
 
-    startGame();
+        gameCanvas.width = 160 * canvasScale;
+        gameCanvas.height = 90 * canvasScale;
 
+        startGame();
+    }
 };
 
 var background1;
@@ -159,12 +163,6 @@ function startGame() {
     game.drawingRoot.adjustDisplay();
 
     game.player1.turn();
-
-    console.log(gameCanvas.width, gameCanvas.height);
-    //current drawing root hat schon die current render pos vom ganzen canvas statt halben
-    console.log(background1.parent.parent.currentRenderPos, background1.parent.parent.x);
-    console.log(background1.parent.currentRenderPos);
-    console.log(background1.currentRenderPos);
 
     requestAnimationFrame(updateCanvas);
 

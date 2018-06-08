@@ -119,7 +119,6 @@ class GameObject {
     get scale() {
 
         return this.relativeScale;
-
     }
 
     set parent(value) {
@@ -198,7 +197,12 @@ class GameObject {
 
     adjustRenderScale() {
 
+
+
         this.currentRenderScale.x = this.scale.x;
+        if (this.scale.x < 1 && this.scale.x > 0.5) {
+
+        }
         this.currentRenderScale.y = this.scale.y;
 
         if (this.parent && this.parent.currentRenderScale != undefined) {
