@@ -316,6 +316,15 @@ class DrawObject extends GameObject {
     }
 
 
+    get x() { return super.x; }
+    set x(value) { super.x = value; }
+    get y() { return super.y; }
+    set y(value) { super.y = value; }
+    get scale() { return super.scale; }
+    set scale(value) { super.scale = value; }
+    get parent() { return super.parent; }
+    set parent(value) { super.parent = value; }
+
 
 }
 
@@ -335,6 +344,15 @@ class DrawText extends GameObject {
         ctx.fillText(this.text, this.currentRenderPos.x, this.currentRenderPos.y);
 
     }
+
+    get x() { return super.x; }
+    set x(value) { super.x = value; }
+    get y() { return super.y; }
+    set y(value) { super.y = value; }
+    get scale() { return super.scale; }
+    set scale(value) { super.scale = value; }
+    get parent() { return super.parent; }
+    set parent(value) { super.parent = value; }
 
 }
 
