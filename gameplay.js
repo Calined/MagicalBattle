@@ -62,22 +62,13 @@ class Player extends GameObject {
 
     }
 
-
-    putDownCard(card) {
-
-        card.parent = this.activeCardContainer;
-        card.scale = 0.6;
-        card.x = 0;
-        card.y = 0;
-    }
-
     loseHealth() {
-        this.lifebar.health -= 1;
-        console.log(this.lifebar.scale.x);
-        this.lifebar.scale.x -= 1 / 3;
-        console.log(this.lifebar.scale.x);
 
+        this.lifebar.health -= 1;
+
+        this.lifebar.scale.x -= 1 / 3;
         this.lifebar.move(-128 / 3, 0);
+
         if (this.lifebar.health <= 0) { this.otherPlayer.win(); }
     }
 
@@ -131,7 +122,6 @@ class Hand extends GameObject {
 
     }
 
-
     drawCard() {
 
         var pickedNum = Math.floor(Math.random() * 4);
@@ -160,6 +150,19 @@ class Hand extends GameObject {
         this.arrange();
 
     }
+
+
+    putDownCard(card) {
+
+        card.parent = this.parent.activeCardContainer;
+        card.scale = 0.6;
+        card.x = 0;
+        card.y = 0;
+
+        this.drawCard();
+
+    }
+
 
     arrange() {
 

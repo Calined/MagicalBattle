@@ -51,13 +51,13 @@ class Game {
             }
 
 
-            activeCard.parent.parent.putDownCard(activeCard);
+            activeCard.parent.putDownCard(activeCard);
             passiveCard.parent.parent.turn();
         }
         //just put down your own card
         else {
 
-            activeCard.parent.parent.putDownCard(activeCard);
+            activeCard.parent.putDownCard(activeCard);
             activeCard.parent.parent.otherPlayer.turn();
         }
 
