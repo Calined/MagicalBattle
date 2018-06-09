@@ -6,6 +6,8 @@ class Game {
 
     constructor() {
 
+        this.running = true;
+
         this.fps = 30;
         this.timeStamp = 0;
         this.time = 0;
@@ -35,8 +37,7 @@ class Game {
             if (
                 activeCard.type === "stone" && passiveCard.type === "scissor" ||
                 activeCard.type === "scissor" && passiveCard.type === "paper" ||
-                activeCard.type === "paper" && passiveCard.type === "stone" ||
-                activeCard.type === "well"
+                activeCard.type === "paper" && passiveCard.type === "stone"
             ) {
                 passiveCard.parent.parent.loseHealth();
             }
@@ -44,25 +45,20 @@ class Game {
             if (
                 passiveCard.type === "stone" && activeCard.type === "scissor" ||
                 passiveCard.type === "scissor" && activeCard.type === "paper" ||
-                passiveCard.type === "paper" && activeCard.type === "stone" ||
-                passiveCard.type === "well"
+                passiveCard.type === "paper" && activeCard.type === "stone"
             ) {
                 activeCard.parent.parent.loseHealth();
             }
 
-
-            activeCard.parent.parent.putDownCard(activeCard);
-            passiveCard.parent.parent.turn();
         }
-        //just put down your own card
-        else {
 
-            activeCard.parent.parent.putDownCard(activeCard);
+        //put down your own card
+        activeCard.parent.putDownCard(activeCard);
+
+        //if the game is still running after this
+        if (this.running) {
             activeCard.parent.parent.otherPlayer.turn();
         }
-
-
-
     }
 
 }
@@ -73,24 +69,27 @@ class Input {
 
         document.onkeydown = function (e) {
 
-            switch (e.key) {
+            if (game.running) {
 
-                case "a":
-                case "ArrowLeft":
-                    game.currentPlayer.moveSelection(-1);
-                    break;
+                switch (e.key) {
 
-                case "d":
-                case "ArrowRight":
-                    game.currentPlayer.moveSelection(1);
-                    break;
+                    case "a":
+                    case "ArrowLeft":
+                        game.currentPlayer.moveSelection(-1);
+                        break;
 
-                case " ":
-                case "Enter":
-                    game.currentPlayer.confirmSelection();
-                    break;
+                    case "d":
+                    case "ArrowRight":
+                        game.currentPlayer.moveSelection(1);
+                        break;
+
+                    case " ":
+                    case "Enter":
+                        game.currentPlayer.confirmSelection();
+                        break;
+                }
+
             }
-
 
         }
     }
@@ -134,13 +133,9 @@ function startGame() {
 
     background2.move(1024, 0);
 
-    var pinetreefg = new DrawObject("pinetree.png", backgroundCol);
-    pinetreefg.move(50, 0);
-    pinetreefg.scale = 0.25;
-
     //needs to be extra cause else it goes in circles
-    game.player1 = new Player();
-    game.player2 = new Player();
+    game.player1 = new Player(game);
+    game.player2 = new Player(game);
 
     game.player1.otherPlayer = game.player2;
     game.player2.otherPlayer = game.player1;
@@ -159,6 +154,8 @@ function startGame() {
     game.drawingRoot.adjustDisplay();
 
     game.player1.turn();
+
+    game.player1.hand.arrange();
 
     requestAnimationFrame(updateCanvas);
 

@@ -99,7 +99,6 @@ class GameObject {
 
     constructor(parent) {
 
-
         //relative pos 
         //this is supposed to be the center origin
         this.relativePos = new RelativeVector(0, 0, this);

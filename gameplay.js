@@ -2,9 +2,11 @@
 
 class Player extends GameObject {
 
-    constructor() {
+    constructor(game) {
 
         super(game.drawingRoot);
+
+        this.game = game;
 
         this.hand = new Hand(this);
 
@@ -62,27 +64,20 @@ class Player extends GameObject {
 
     }
 
-
-    putDownCard(card) {
-
-        card.parent = this.activeCardContainer;
-        card.scale = 0.6;
-        card.x = 0;
-        card.y = 0;
-    }
-
     loseHealth() {
-        this.lifebar.health -= 1;
-        console.log(this.lifebar.scale.x);
-        this.lifebar.scale.x -= 1 / 3;
-        console.log(this.lifebar.scale.x);
 
+        this.lifebar.health -= 1;
+
+        this.lifebar.scale.x -= 1 / 3;
         this.lifebar.move(-128 / 3, 0);
+
         if (this.lifebar.health <= 0) { this.otherPlayer.win(); }
     }
 
 
     win() {
+
+        this.game.running = false;
 
         this.winText = new DrawText("You Win!", this);
         this.winText.move(0, -300);
@@ -129,35 +124,54 @@ class Hand extends GameObject {
 
         super(player);
 
-        this.drawCard = function () {
+    }
 
-            var pickedNum = Math.floor(Math.random() * 4);
-            var pickedString = "";
-            switch (pickedNum) {
-                case 0:
-                    pickedString = "stone";
-                    break;
+    drawCard() {
 
-                case 1:
-                    pickedString = "scissor";
-                    break;
+        var pickedNum = Math.floor(Math.random() * 3);
+        var pickedString = "";
+        switch (pickedNum) {
+            case 0:
+                pickedString = "stone";
+                break;
 
-                case 2:
-                    pickedString = "paper";
-                    break;
+            case 1:
+                pickedString = "scissor";
+                break;
 
-                case 3:
-                    pickedString = "well";
-                    break;
-
-            }
-
-            var card = new Card(pickedString, this);
-
-            //spread cards in hand
-            card.move((this.children.length - 1) * 75 - 75, 0);
+            case 2:
+                pickedString = "paper";
+                break;
 
         }
+
+        var card = new Card(pickedString, this);
+
+        this.arrange();
+
+    }
+
+
+    putDownCard(card) {
+
+        card.parent = this.parent.activeCardContainer;
+        card.scale = 0.6;
+        card.x = 0;
+        card.y = 0;
+
+        this.drawCard();
+
+    }
+
+
+    arrange() {
+
+        this.children.forEach(function (card) {
+
+            card.x = card.getChildIndex() * 75 - 75;
+
+        });
+
     }
 
 }
