@@ -6,6 +6,8 @@ class Game {
 
     constructor() {
 
+        this.running = true;
+
         this.fps = 30;
         this.timeStamp = 0;
         this.time = 0;
@@ -50,19 +52,15 @@ class Game {
                 activeCard.parent.parent.loseHealth();
             }
 
-
-            activeCard.parent.putDownCard(activeCard);
-            passiveCard.parent.parent.turn();
         }
-        //just put down your own card
-        else {
 
-            activeCard.parent.putDownCard(activeCard);
+        //put down your own card
+        activeCard.parent.putDownCard(activeCard);
+
+        //if the game is still running after this
+        if (this.running) {
             activeCard.parent.parent.otherPlayer.turn();
         }
-
-
-
     }
 
 }
@@ -73,24 +71,27 @@ class Input {
 
         document.onkeydown = function (e) {
 
-            switch (e.key) {
+            if (game.running) {
 
-                case "a":
-                case "ArrowLeft":
-                    game.currentPlayer.moveSelection(-1);
-                    break;
+                switch (e.key) {
 
-                case "d":
-                case "ArrowRight":
-                    game.currentPlayer.moveSelection(1);
-                    break;
+                    case "a":
+                    case "ArrowLeft":
+                        game.currentPlayer.moveSelection(-1);
+                        break;
 
-                case " ":
-                case "Enter":
-                    game.currentPlayer.confirmSelection();
-                    break;
+                    case "d":
+                    case "ArrowRight":
+                        game.currentPlayer.moveSelection(1);
+                        break;
+
+                    case " ":
+                    case "Enter":
+                        game.currentPlayer.confirmSelection();
+                        break;
+                }
+
             }
-
 
         }
     }
@@ -139,8 +140,8 @@ function startGame() {
     pinetreefg.scale = 0.25;
 
     //needs to be extra cause else it goes in circles
-    game.player1 = new Player();
-    game.player2 = new Player();
+    game.player1 = new Player(game);
+    game.player2 = new Player(game);
 
     game.player1.otherPlayer = game.player2;
     game.player2.otherPlayer = game.player1;

@@ -2,9 +2,11 @@
 
 class Player extends GameObject {
 
-    constructor() {
+    constructor(game) {
 
         super(game.drawingRoot);
+
+        this.game = game;
 
         this.hand = new Hand(this);
 
@@ -74,6 +76,8 @@ class Player extends GameObject {
 
 
     win() {
+
+        this.game.running = false;
 
         this.winText = new DrawText("You Win!", this);
         this.winText.move(0, -300);
