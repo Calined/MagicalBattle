@@ -73,9 +73,11 @@ class Player extends GameObject {
 
     loseHealth() {
         this.lifebar.health -= 1;
+        console.log(this.lifebar.scale.x);
         this.lifebar.scale.x -= 1 / 3;
+        console.log(this.lifebar.scale.x);
 
-        this.lifebar.move(-256 / 3, 0);
+        this.lifebar.move(-128 / 3, 0);
         if (this.lifebar.health <= 0) { this.otherPlayer.win(); }
     }
 
