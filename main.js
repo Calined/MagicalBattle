@@ -160,7 +160,7 @@ function startGame() {
 
     game.player1.turn();
 
-    //  requestAnimationFrame(updateCanvas);
+    requestAnimationFrame(updateCanvas);
 
     if (debug) { var debugMode = new DebugMode() }
 

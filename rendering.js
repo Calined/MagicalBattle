@@ -47,7 +47,6 @@ class Vector {
 
         this._x = new Dimension(xVal);
         this._y = new Dimension(yVal);
-
     }
 
     get x() {
@@ -55,6 +54,7 @@ class Vector {
     }
 
     set x(value) {
+
         this._x.value = value;
 
     }
@@ -69,6 +69,32 @@ class Vector {
 
 }
 
+class RelativeVector extends Vector {
+    constructor(xVal, yVal, gameObject) {
+        super(xVal, yVal);
+
+        this.gameObject = gameObject;
+
+    }
+
+    get x() { return super.x; }
+
+    set x(value) {
+
+        super.x = value;
+        this.gameObject.adjustDisplay();
+    }
+
+    get y() { return super.y; }
+
+    set y(value) {
+        super.y = value;
+        this.gameObject.adjustDisplay();
+    }
+
+}
+
+
 class GameObject {
 
     constructor(parent) {
@@ -76,12 +102,12 @@ class GameObject {
 
         //relative pos 
         //this is supposed to be the center origin
-        this.relativePos = new Vector(0, 0, this);
+        this.relativePos = new RelativeVector(0, 0, this);
         //this is the position where the card actually is rendered
-        this.currentRenderPos = new Vector(0, 0, this);
+        this.currentRenderPos = new Vector(0, 0);
 
-        this.relativeScale = new Vector(1, 1, this);
-        this.currentRenderScale = new Vector(1, 1, this);
+        this.relativeScale = new RelativeVector(1, 1, this);
+        this.currentRenderScale = new Vector(1, 1);
 
         this.children = [];
 
@@ -198,8 +224,6 @@ class GameObject {
 
     adjustRenderScale() {
 
-        console.log("adjustRenderScale");
-        console.log(this.scale.x);
         this.currentRenderScale.x = this.scale.x;
         this.currentRenderScale.y = this.scale.y;
 
