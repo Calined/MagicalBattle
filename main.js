@@ -37,8 +37,7 @@ class Game {
             if (
                 activeCard.type === "stone" && passiveCard.type === "scissor" ||
                 activeCard.type === "scissor" && passiveCard.type === "paper" ||
-                activeCard.type === "paper" && passiveCard.type === "stone" ||
-                activeCard.type === "well"
+                activeCard.type === "paper" && passiveCard.type === "stone"
             ) {
                 passiveCard.parent.parent.loseHealth();
             }
@@ -46,8 +45,7 @@ class Game {
             if (
                 passiveCard.type === "stone" && activeCard.type === "scissor" ||
                 passiveCard.type === "scissor" && activeCard.type === "paper" ||
-                passiveCard.type === "paper" && activeCard.type === "stone" ||
-                passiveCard.type === "well"
+                passiveCard.type === "paper" && activeCard.type === "stone"
             ) {
                 activeCard.parent.parent.loseHealth();
             }
