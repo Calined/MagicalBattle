@@ -76,12 +76,12 @@ class GameObject {
 
         //relative pos 
         //this is supposed to be the center origin
-        this.relativePos = new Vector(0, 0);
+        this.relativePos = new Vector(0, 0, this);
         //this is the position where the card actually is rendered
-        this.currentRenderPos = new Vector(0, 0);
+        this.currentRenderPos = new Vector(0, 0, this);
 
-        this.relativeScale = new Vector(1, 1);
-        this.currentRenderScale = new Vector(1, 1);
+        this.relativeScale = new Vector(1, 1, this);
+        this.currentRenderScale = new Vector(1, 1, this);
 
         this.children = [];
 
@@ -198,6 +198,8 @@ class GameObject {
 
     adjustRenderScale() {
 
+        console.log("adjustRenderScale");
+        console.log(this.scale.x);
         this.currentRenderScale.x = this.scale.x;
         this.currentRenderScale.y = this.scale.y;
 
