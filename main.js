@@ -160,6 +160,8 @@ function startGame() {
 
     game.player1.turn();
 
+    game.player1.hand.arrange();
+
     requestAnimationFrame(updateCanvas);
 
     if (debug) { var debugMode = new DebugMode() }

@@ -129,35 +129,46 @@ class Hand extends GameObject {
 
         super(player);
 
-        this.drawCard = function () {
+    }
 
-            var pickedNum = Math.floor(Math.random() * 4);
-            var pickedString = "";
-            switch (pickedNum) {
-                case 0:
-                    pickedString = "stone";
-                    break;
 
-                case 1:
-                    pickedString = "scissor";
-                    break;
+    drawCard() {
 
-                case 2:
-                    pickedString = "paper";
-                    break;
+        var pickedNum = Math.floor(Math.random() * 4);
+        var pickedString = "";
+        switch (pickedNum) {
+            case 0:
+                pickedString = "stone";
+                break;
 
-                case 3:
-                    pickedString = "well";
-                    break;
+            case 1:
+                pickedString = "scissor";
+                break;
 
-            }
+            case 2:
+                pickedString = "paper";
+                break;
 
-            var card = new Card(pickedString, this);
-
-            //spread cards in hand
-            card.move((this.children.length - 1) * 75 - 75, 0);
+            case 3:
+                pickedString = "well";
+                break;
 
         }
+
+        var card = new Card(pickedString, this);
+
+        this.arrange();
+
+    }
+
+    arrange() {
+
+        this.children.forEach(function (card) {
+
+            card.x = card.getChildIndex() * 75 - 75;
+
+        });
+
     }
 
 }
