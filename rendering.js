@@ -11,7 +11,9 @@ class Dimension {
 
     }
 
-    get value() { return this._value; }
+    get value() {
+        return this._value;
+    }
 
     set value(value) {
         switch (this.limitMode) {
@@ -77,7 +79,9 @@ class RelativeVector extends Vector {
 
     }
 
-    get x() { return super.x; }
+    get x() {
+        return super.x;
+    }
 
     set x(value) {
 
@@ -85,7 +89,9 @@ class RelativeVector extends Vector {
         this.gameObject.adjustDisplay();
     }
 
-    get y() { return super.y; }
+    get y() {
+        return super.y;
+    }
 
     set y(value) {
         super.y = value;
@@ -94,6 +100,24 @@ class RelativeVector extends Vector {
 
 }
 
+class AnimationState {
+    constructor(posX = 0, posY = 0, scaleX = 1, scaleY = 1) {
+
+        this.position = new Vector(posX, posY);
+        this.scale = new Vector(scaleX, scaleY);
+
+    }
+
+}
+
+class Animation {
+    constructor() {
+
+        this.currentProgress = 0;
+        this.speed = 1;
+        this.states = [];
+    }
+}
 
 class GameObject {
 
@@ -113,6 +137,8 @@ class GameObject {
         this._parent = undefined;
         //calls secure method, so the children get set
         this.parent = parent;
+
+        this.activeAnimations = [];
 
     }
 
@@ -158,8 +184,9 @@ class GameObject {
         this._parent = value;
 
         //add child
-        if (value instanceof Game) { }
-        else { this._parent.children.push(this); }
+        if (value instanceof Game) {} else {
+            this._parent.children.push(this);
+        }
 
 
         this.adjustDisplay();
@@ -184,8 +211,7 @@ class GameObject {
         if (this.parent.currentRenderPos) {
             var newX = this.parent.currentRenderPos.x;
             var newY = this.parent.currentRenderPos.y;
-        }
-        else {
+        } else {
             var newX = 0;
             var newY = 0;
         }
@@ -193,8 +219,7 @@ class GameObject {
         if (this.parent.image) {
             newX += this.parent.image.naturalWidth * this.parent.currentRenderScale.x / 2;
             newY += this.parent.image.naturalHeight * this.parent.currentRenderScale.y / 2;
-        }
-        else {
+        } else {
             //checking if this parent is window
             if (this.parent.currentRenderPos === undefined) {
                 newX += gameCanvas.width / 2;
@@ -263,7 +288,9 @@ class GameObject {
     getChildIndex() {
 
         for (var i = 0; i < this.parent.children.length; i++) {
-            if (this.parent.children[i] === this) { return i; }
+            if (this.parent.children[i] === this) {
+                return i;
+            }
         }
     }
 
@@ -271,13 +298,38 @@ class GameObject {
     destroy() {
 
         //call destroy for the children first
-        this.children.forEach(function (child) { child.destroy(); });
+        this.children.forEach(function (child) {
+            child.destroy();
+        });
 
         //remove myself from my parents child array
         this.parent.children.splice(this.getChildIndex(), 1);
 
         //delete me
         delete this;
+    }
+
+    //continues animations if they are there
+    continueAnimations() {
+
+        //continue animation on this one
+        this.activeAnimations.forEach(animation => {
+
+        });
+
+        //continue with the children
+        this.children.forEach(function (child) {
+
+            child.continueAnimations();
+
+        });
+
+    }
+
+
+    lerp() {
+
+        this.move();
     }
 
 }
@@ -315,14 +367,30 @@ class DrawObject extends GameObject {
     }
 
 
-    get x() { return super.x; }
-    set x(value) { super.x = value; }
-    get y() { return super.y; }
-    set y(value) { super.y = value; }
-    get scale() { return super.scale; }
-    set scale(value) { super.scale = value; }
-    get parent() { return super.parent; }
-    set parent(value) { super.parent = value; }
+    get x() {
+        return super.x;
+    }
+    set x(value) {
+        super.x = value;
+    }
+    get y() {
+        return super.y;
+    }
+    set y(value) {
+        super.y = value;
+    }
+    get scale() {
+        return super.scale;
+    }
+    set scale(value) {
+        super.scale = value;
+    }
+    get parent() {
+        return super.parent;
+    }
+    set parent(value) {
+        super.parent = value;
+    }
 
 
 }
@@ -344,14 +412,30 @@ class DrawText extends GameObject {
 
     }
 
-    get x() { return super.x; }
-    set x(value) { super.x = value; }
-    get y() { return super.y; }
-    set y(value) { super.y = value; }
-    get scale() { return super.scale; }
-    set scale(value) { super.scale = value; }
-    get parent() { return super.parent; }
-    set parent(value) { super.parent = value; }
+    get x() {
+        return super.x;
+    }
+    set x(value) {
+        super.x = value;
+    }
+    get y() {
+        return super.y;
+    }
+    set y(value) {
+        super.y = value;
+    }
+    get scale() {
+        return super.scale;
+    }
+    set scale(value) {
+        super.scale = value;
+    }
+    get parent() {
+        return super.parent;
+    }
+    set parent(value) {
+        super.parent = value;
+    }
 
 }
 

@@ -17,11 +17,15 @@ class Game {
 
         this.drawingRoot = new GameObject(this);
 
+        this.animations = new Animations();
+
     }
 
     renderThroughStack() {
 
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+        this.drawingRoot.continueAnimations();
         //if this object is a draw object, render it
         this.drawingRoot.checkForRender();
 
@@ -159,8 +163,8 @@ function startGame() {
 
     requestAnimationFrame(updateCanvas);
 
-    if (debug) { var debugMode = new DebugMode() }
+    if (debug) {
+        var debugMode = new DebugMode()
+    }
 
 }
-
-
