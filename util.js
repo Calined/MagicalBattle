@@ -40,4 +40,13 @@ class Util {
         return value1 + (value2 - value1) * amount;
     }
 
+    static getIndex(array, element) {
+
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === element) {
+                return i;
+            }
+        }
+    }
+
 }

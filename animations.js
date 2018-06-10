@@ -30,13 +30,22 @@ class Animation {
 
 		this.currentProgress += delta / 1000;
 
-		//lerp between the two states on the current progress
+		if (this.currentProgress < 1) {
 
-		this.object.x = Util.lerp(this.states[0].position.x, this.states[1].position.x, this.currentProgress);
-		this.object.y = Util.lerp(this.states[0].position.y, this.states[1].position.y, this.currentProgress);
+			//lerp between the two states on the current progress
+			this.object.x = Util.lerp(this.states[0].position.x, this.states[1].position.x, this.currentProgress);
+			this.object.y = Util.lerp(this.states[0].position.y, this.states[1].position.y, this.currentProgress);
 
-		this.object.scale.x = Util.lerp(this.states[0].scale.x, this.states[1].scale.x, this.currentProgress);
-		this.object.scale.y = Util.lerp(this.states[0].scale.y, this.states[1].scale.y, this.currentProgress);
+			this.object.scale.x = Util.lerp(this.states[0].scale.x, this.states[1].scale.x, this.currentProgress);
+			this.object.scale.y = Util.lerp(this.states[0].scale.y, this.states[1].scale.y, this.currentProgress);
+
+		} else {
+			//remove the animation from the stack
+			this.object.activeAnimations.splice(Util.getIndex(this.object.activeAnimations, this), 1);
+
+			//and delete it
+			delete this;
+		}
 
 	}
 

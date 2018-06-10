@@ -269,11 +269,8 @@ class GameObject {
     //returns the Index this child has in it's parent
     getChildIndex() {
 
-        for (var i = 0; i < this.parent.children.length; i++) {
-            if (this.parent.children[i] === this) {
-                return i;
-            }
-        }
+        return Util.getIndex(this.parent.children, this);
+
     }
 
 
