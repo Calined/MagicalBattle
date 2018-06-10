@@ -121,10 +121,6 @@ class Card extends GameObject {
 
     }
 
-    playDrawAnimation(speed) {
-        this.lerp(, );
-    }
-
 }
 
 
@@ -161,7 +157,7 @@ class Hand extends GameObject {
 
         this.arrange();
 
-        card.playDrawAnimation(1);
+        card.activeAnimations.push(Animations.getNewAnimation("drawCard"));
 
     }
 

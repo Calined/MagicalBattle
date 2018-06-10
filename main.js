@@ -17,8 +17,6 @@ class Game {
 
         this.drawingRoot = new GameObject(this);
 
-        this.animations = new Animations();
-
     }
 
     renderThroughStack() {

@@ -100,24 +100,6 @@ class RelativeVector extends Vector {
 
 }
 
-class AnimationState {
-    constructor(posX = 0, posY = 0, scaleX = 1, scaleY = 1) {
-
-        this.position = new Vector(posX, posY);
-        this.scale = new Vector(scaleX, scaleY);
-
-    }
-
-}
-
-class Animation {
-    constructor() {
-
-        this.currentProgress = 0;
-        this.speed = 1;
-        this.states = [];
-    }
-}
 
 class GameObject {
 
