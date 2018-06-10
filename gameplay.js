@@ -32,12 +32,16 @@ class Player extends GameObject {
     turn() {
 
         //remove old card if there is any
-        if (this.activeCardContainer.children[0]) { this.activeCardContainer.children[0].destroy(); }
+        if (this.activeCardContainer.children[0]) {
+            this.activeCardContainer.children[0].destroy();
+        }
 
         game.currentPlayer = this;
 
         this.selectionBorder = new DrawObject("card_selectionoverlay.png", this.hand.children[0]);
         this.selectionBorder.scale = 1;
+
+        this.moveSelection(0);
 
     }
 
@@ -71,7 +75,9 @@ class Player extends GameObject {
         this.lifebar.scale.x -= 1 / 3;
         this.lifebar.move(-128 / 3, 0);
 
-        if (this.lifebar.health <= 0) { this.otherPlayer.win(); }
+        if (this.lifebar.health <= 0) {
+            this.otherPlayer.win();
+        }
     }
 
 
