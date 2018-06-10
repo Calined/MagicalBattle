@@ -8,7 +8,7 @@ class Game {
 
         this.running = true;
 
-        this.fps = 30;
+        this.fps = 60;
         this.timeStamp = 0;
         this.time = 0;
         this.dt = 0;

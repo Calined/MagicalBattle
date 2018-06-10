@@ -157,7 +157,7 @@ class Hand extends GameObject {
 
         this.arrange();
 
-        card.activeAnimations.push(Animations.getNewAnimation("drawCard"));
+        card.activeAnimations.push(Animations.getNewAnimation("drawCard", this));
 
     }
 

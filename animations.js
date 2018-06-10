@@ -10,7 +10,9 @@ class AnimationState {
 
 
 class Animation {
-	constructor() {
+	constructor(object) {
+
+		this.object = object;
 
 		this.currentProgress = 0;
 		this.speed = 1;
@@ -20,6 +22,24 @@ class Animation {
 		this.blocksInput = false;
 
 	}
+
+	process(delta) {
+
+		//running at 60 fps
+		//but should also hand over the delta time of the last frame
+
+		this.currentProgress += delta / 1000;
+
+		//lerp between the two states on the current progress
+
+		this.object.x = Util.lerp(this.states[0].position.x, this.states[1].position.x, this.currentProgress);
+		this.object.y = Util.lerp(this.states[0].position.y, this.states[1].position.y, this.currentProgress);
+
+		this.object.scale.x = Util.lerp(this.states[0].scale.x, this.states[1].scale.x, this.currentProgress);
+		this.object.scale.y = Util.lerp(this.states[0].scale.y, this.states[1].scale.y, this.currentProgress);
+
+	}
+
 }
 
 
@@ -28,12 +48,11 @@ class Animations {
 
 	constructor() {
 
-
 	}
 
-	static getNewAnimation(name) {
+	static getNewAnimation(name, object) {
 
-		let newAnimation = new Animation();
+		let newAnimation = new Animation(object);
 
 		switch (name) {
 

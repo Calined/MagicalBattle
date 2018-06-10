@@ -297,6 +297,8 @@ class GameObject {
         //continue animation on this one
         this.activeAnimations.forEach(animation => {
 
+            animation.process(game.dt);
+
         });
 
         //continue with the children
